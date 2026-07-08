@@ -1,400 +1,531 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Com Jesus é MUITO mais legal! - Plano da Salvação 🎉</title>
-    
-    <meta name="description" content="Com Jesus é MUITO mais legal! Descubra o Plano da Salvação com cores e corações!">
-    <meta name="keywords" content="plano da salvação, ministério infantil, cores da salvação">
-    <meta name="robots" content="index, follow">
-    
-    <meta property="og:title" content="Com Jesus é MUITO mais legal! - Plano da Salvação 🎉">
-    <meta property="og:description" content="Descubra o Plano da Salvação de forma divertida!">
-    <meta property="og:type" content="website">
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&family=Pangolin&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <link rel="stylesheet" href="assets/css/style.css">
-</head>
-<body>
+import React, { useState } from 'react';
+import { ChevronLeft, ChevronRight, Play, Star, Music, Clock, MapPin, Users, Volume2, ArrowRight } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
-<header id="header">
-    <nav class="navbar">
-        <a href="#" class="logo">
-            <i class="fa-solid fa-star" style="color: var(--dourado);" aria-hidden="true"></i> 
-            <span class="dourado">Com</span> 
-            <span class="vermelho">Jesus</span> 
-            <span class="verde">é</span> 
-            <span class="dourado">MUITO</span> 
-            <span class="vermelho">mais</span> 
-            <span class="verde">legal!</span> 🌟
-        </a>
-        <button class="menu-toggle" id="btn-menu" aria-expanded="false" aria-label="Abrir menu">
-            <i class="fa-solid fa-bars" aria-hidden="true"></i>
-        </button>
-        <ul class="nav-menu" id="menu-principal">
-            <li><a href="#sobre" class="nav-link">Quem Somos</a></li>
-            <li><a href="#servicos" class="nav-link">Brincadeiras</a></li>
-            <li><a href="#galeria" class="nav-link">Fotos</a></li>
-            <li><a href="#cofrinhos" class="nav-link">Apoiar</a></li>
-            <li><a href="#contato" class="btn-ChamaFesta">Chamar os Tios!</a></li>
-        </ul>
-    </nav>
-</header>
+export default function CadenzaFluxoCompleto() {
+  const [step, setStep] = useState(0);
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [price, setPrice] = useState(3500);
+  const [eventType, setEventType] = useState('cerimonia');
+  const [selectedVideo, setSelectedVideo] = useState(null);
 
-<section class="reino-hero">
-    <!-- Estrelas decorativas -->
-    <div class="estrela-decorativa">✨</div>
-    <div class="estrela-decorativa">⭐</div>
-    <div class="estrela-decorativa">✨</div>
-    <div class="estrela-decorativa">🌟</div>
-    <div class="estrela-decorativa">✨</div>
-    <div class="estrela-decorativa">⭐</div>
-    <div class="estrela-decorativa">✨</div>
-    <div class="estrela-decorativa">🌟</div>
-    <div class="estrela-decorativa">✨</div>
-    <div class="estrela-decorativa">⭐</div>
+  const steps = [
+    { name: 'Landing', number: '1️⃣' },
+    { name: 'Configurador', number: '2️⃣' },
+    { name: 'Lead Qual.', number: '3️⃣' },
+    { name: 'Video Jamada', number: '4️⃣' },
+    { name: 'Confirmação', number: '5️⃣' },
+  ];
 
-    <div class="circulo-cores" aria-hidden="true"></div>
-    
-    <h1 class="titulo-magico">
-        Descubra o <span class="dourado">Plano</span> <span class="vermelho">da</span> <span class="verde">Salvação</span> ❤️
-    </h1>
-    <p class="subtitulo-magico">
-        Clique nos corações e entenda cada parte do amor de Deus!
-    </p>
+  // PASSO 1: LANDING
+  const Landing = () => (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -20 }}
+      className="min-h-screen bg-white"
+    >
+      {/* Header */}
+      <div className="bg-gradient-to-r from-amber-50 to-white p-6 border-b">
+        <div className="flex items-center gap-3 max-w-4xl mx-auto">
+          <Music className="w-8 h-8 text-amber-600" />
+          <h1 className="text-3xl font-bold text-gray-900">Banda XYZ</h1>
+          <span className="ml-auto text-sm text-gray-500">Casamentos & Eventos</span>
+        </div>
+      </div>
 
-    <!-- CORAÇÕES DA SALVAÇÃO COM SVG -->
-    <div class="coracoes-container">
-        <!-- Coração Dourado -->
-        <button class="btn-coracao dourado" data-cor="dourado" aria-label="Céu - Amor de Deus">
-            <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-                <defs>
-                    <linearGradient id="grad-dourado" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" stop-color="#FFD700"/>
-                        <stop offset="100%" stop-color="#F59E0B"/>
-                    </linearGradient>
-                    <linearGradient id="grad-preto" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" stop-color="#1a1a2e"/>
-                        <stop offset="100%" stop-color="#2d2d44"/>
-                    </linearGradient>
-                    <linearGradient id="grad-vermelho" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" stop-color="#FF1744"/>
-                        <stop offset="100%" stop-color="#D50000"/>
-                    </linearGradient>
-                    <linearGradient id="grad-verde" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" stop-color="#00E676"/>
-                        <stop offset="100%" stop-color="#00C853"/>
-                    </linearGradient>
-                </defs>
-                <path class="coracao-svg" d="M 60 25 C 35 0, 5 15, 5 45 C 5 80, 25 95, 60 115 C 95 95, 115 80, 115 45 C 115 15, 85 0, 60 25 Z" stroke="var(--dourado-sombra)" stroke-width="4"/>
-                <path class="coracao-svg-border" d="M 60 25 C 35 0, 5 15, 5 45 C 5 80, 25 95, 60 115 C 95 95, 115 80, 115 45 C 115 15, 85 0, 60 25 Z" fill="none" stroke-width="4"/>
-            </svg>
-            <div class="conteudo">
-                <span class="emoji">🌟</span>
-                <span class="label">Céu</span>
-            </div>
-        </button>
+      {/* Hero Video */}
+      <div className="max-w-4xl mx-auto px-6 py-8">
+        <div className="bg-black rounded-xl overflow-hidden aspect-video flex items-center justify-center mb-8 relative group cursor-pointer">
+          <div className="absolute inset-0 bg-gradient-to-br from-amber-600/20 to-transparent"></div>
+          <Play className="w-20 h-20 text-white/80 group-hover:text-white transition-all" />
+          <p className="absolute bottom-4 left-4 text-white text-sm">30s • Ao vivo no último casamento</p>
+        </div>
 
-        <!-- Coração Preto -->
-        <button class="btn-coracao preto" data-cor="preto" aria-label="Pecado">
-            <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-                <path class="coracao-svg" d="M 60 25 C 35 0, 5 15, 5 45 C 5 80, 25 95, 60 115 C 95 95, 115 80, 115 45 C 115 15, 85 0, 60 25 Z" stroke="var(--preto-pecado)" stroke-width="4"/>
-                <path class="coracao-svg-border" d="M 60 25 C 35 0, 5 15, 5 45 C 5 80, 25 95, 60 115 C 95 95, 115 80, 115 45 C 115 15, 85 0, 60 25 Z" fill="none" stroke-width="4"/>
-            </svg>
-            <div class="conteudo">
-                <span class="emoji">😔</span>
-                <span class="label">Pecado</span>
-            </div>
-        </button>
+        {/* Tagline */}
+        <h2 className="text-4xl font-bold text-gray-900 mb-4">
+          A banda que toca a música que você imaginou
+        </h2>
+        <p className="text-xl text-gray-600 mb-12">
+          Vídeos, reviews reais e som impecável. Confira se combina com seu estilo.
+        </p>
 
-        <!-- Coração Vermelho -->
-        <button class="btn-coracao vermelho" data-cor="vermelho" aria-label="Sangue de Jesus">
-            <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-                <path class="coracao-svg" d="M 60 25 C 35 0, 5 15, 5 45 C 5 80, 25 95, 60 115 C 95 95, 115 80, 115 45 C 115 15, 85 0, 60 25 Z" stroke="var(--vermelho-escuro)" stroke-width="4"/>
-                <path class="coracao-svg-border" d="M 60 25 C 35 0, 5 15, 5 45 C 5 80, 25 95, 60 115 C 95 95, 115 80, 115 45 C 115 15, 85 0, 60 25 Z" fill="none" stroke-width="4"/>
-            </svg>
-            <div class="conteudo">
-                <span class="emoji">❤️</span>
-                <span class="label">Sangue</span>
-            </div>
-        </button>
+        {/* Video Gallery */}
+        <div className="mb-12">
+          <h3 className="text-2xl font-bold text-gray-900 mb-6">Nossos Vídeos</h3>
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+            {[
+              { title: 'Cerimônia Intimista', duration: '1:45', icon: '🎻' },
+              { title: 'Recepção Animada', duration: '2:30', icon: '🎸' },
+              { title: 'Nosso Som', duration: '2:00', icon: '🎵' },
+              { title: 'Vendo em Ação', duration: '0:45', icon: '👯' }
+            ].map((video, i) => (
+              <motion.button
+                key={i}
+                whileHover={{ scale: 1.05 }}
+                onClick={() => setSelectedVideo(video)}
+                className="bg-gray-100 rounded-lg p-4 text-center hover:bg-amber-100 transition-all group"
+              >
+                <div className="text-4xl mb-2 group-hover:scale-125 transition-transform">{video.icon}</div>
+                <p className="font-semibold text-gray-900 text-sm">{video.title}</p>
+                <p className="text-xs text-gray-600 mt-2">{video.duration}</p>
+              </motion.button>
+            ))}
+          </div>
+        </div>
 
-        <!-- Coração Branco -->
-        <button class="btn-coracao branco" data-cor="branco" aria-label="Perdão - Coração Limpo">
-            <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-                <path class="coracao-svg" d="M 60 25 C 35 0, 5 15, 5 45 C 5 80, 25 95, 60 115 C 95 95, 115 80, 115 45 C 115 15, 85 0, 60 25 Z" stroke="var(--texto-escuro)" stroke-width="4"/>
-                <path class="coracao-svg-border" d="M 60 25 C 35 0, 5 15, 5 45 C 5 80, 25 95, 60 115 C 95 95, 115 80, 115 45 C 115 15, 85 0, 60 25 Z" fill="none" stroke-width="4"/>
-            </svg>
-            <div class="conteudo">
-                <span class="emoji">🕊️</span>
-                <span class="label">Perdão</span>
-            </div>
+        {/* Reviews */}
+        <div className="mb-12">
+          <h3 className="text-2xl font-bold text-gray-900 mb-6">Avaliações de Clientes</h3>
+          <div className="space-y-4">
+            {[
+              { name: 'João & Maria', rating: 5, text: 'Foram incríveis! Exatamente o que sonhamos.' },
+              { name: 'Carlos & Ana', rating: 5, text: 'Melhor decisão que tomamos. Toda a festa falou!' },
+              { name: 'Pedro & Lara', rating: 5, text: 'Profissionais, talentosos, humanizados.' }
+            ].map((review, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: i * 0.1 }}
+                className="bg-amber-50 p-4 rounded-lg border border-amber-200"
+              >
+                <div className="flex items-center gap-2 mb-2">
+                  <div className="flex">
+                    {[...Array(5)].map((_, j) => (
+                      <Star key={j} className="w-4 h-4 fill-amber-600 text-amber-600" />
+                    ))}
+                  </div>
+                  <span className="font-semibold text-gray-900">{review.name}</span>
+                </div>
+                <p className="text-gray-700">{review.text}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+
+        {/* CTA */}
+        <motion.button
+          whileHover={{ scale: 1.02 }}
+          onClick={() => setStep(1)}
+          className="w-full bg-gradient-to-r from-amber-500 to-amber-600 text-white py-4 rounded-lg font-bold text-lg hover:shadow-lg transition-all"
+        >
+          Quer saber se combina com seu casamento? →
+        </motion.button>
+      </div>
+    </motion.div>
+  );
+
+  // PASSO 2: CONFIGURADOR
+  const Configurador = () => (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -20 }}
+      className="min-h-screen bg-gradient-to-br from-gray-50 to-white p-6"
+    >
+      <div className="max-w-2xl mx-auto">
+        <button onClick={() => setStep(0)} className="flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-6">
+          <ChevronLeft className="w-5 h-5" /> Voltar
         </button>
 
-        <!-- Coração Verde -->
-        <button class="btn-coracao verde" data-cor="verde" aria-label="Crescimento Espiritual">
-            <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-                <path class="coracao-svg" d="M 60 25 C 35 0, 5 15, 5 45 C 5 80, 25 95, 60 115 C 95 95, 115 80, 115 45 C 115 15, 85 0, 60 25 Z" stroke="var(--verde-escuro)" stroke-width="4"/>
-                <path class="coracao-svg-border" d="M 60 25 C 35 0, 5 15, 5 45 C 5 80, 25 95, 60 115 C 95 95, 115 80, 115 45 C 115 15, 85 0, 60 25 Z" fill="none" stroke-width="4"/>
-            </svg>
-            <div class="conteudo">
-                <span class="emoji">🌱</span>
-                <span class="label">Crescimento</span>
+        <h2 className="text-3xl font-bold text-gray-900 mb-2">Vamos orçar seu evento?</h2>
+        <p className="text-gray-600 mb-8">Responda 5 perguntas rápidas e veja o preço em tempo real.</p>
+
+        <div className="bg-white rounded-xl shadow-sm border p-6 space-y-8">
+          {/* Tipo de evento */}
+          <div>
+            <label className="text-sm font-bold text-gray-900 block mb-3">1. Tipo de evento</label>
+            <div className="grid grid-cols-3 gap-2">
+              {[
+                { id: 'cerimonia', label: 'Cerimônia' },
+                { id: 'recepcao', label: 'Recepção' },
+                { id: 'cerimonia_recepcao', label: 'Ambos' }
+              ].map(type => (
+                <motion.button
+                  key={type.id}
+                  whileHover={{ scale: 1.05 }}
+                  onClick={() => setEventType(type.id)}
+                  className={`px-4 py-2 rounded-lg font-medium transition-all ${
+                    eventType === type.id
+                      ? 'bg-amber-600 text-white shadow-lg'
+                      : 'bg-gray-100 text-gray-900 hover:bg-gray-200'
+                  }`}
+                >
+                  {type.label}
+                </motion.button>
+              ))}
             </div>
+          </div>
+
+          {/* Data */}
+          <div>
+            <label className="text-sm font-bold text-gray-900 block mb-3">2. Data do evento</label>
+            <div className="bg-gray-50 p-4 rounded-lg">
+              <p className="text-sm text-gray-600 mb-3">Dezembro 2024 (datas cinzas estão bloqueadas)</p>
+              <div className="grid grid-cols-7 gap-2">
+                {['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'].map(day => (
+                  <div key={day} className="text-center text-xs font-semibold text-gray-600 py-1">
+                    {day}
+                  </div>
+                ))}
+                {[...Array(30)].map((_, i) => {
+                  const day = i + 1;
+                  const blocked = [5, 6, 12, 13, 19, 20, 26, 27].includes(day);
+                  const selected = selectedDate === day;
+
+                  return (
+                    <motion.button
+                      key={day}
+                      onClick={() => !blocked && setSelectedDate(day)}
+                      disabled={blocked}
+                      whileHover={!blocked ? { scale: 1.1 } : {}}
+                      className={`h-8 rounded text-xs font-semibold transition-all ${
+                        selected
+                          ? 'bg-amber-600 text-white shadow-lg'
+                          : blocked
+                          ? 'bg-gray-300 text-gray-500 line-through cursor-not-allowed'
+                          : 'bg-white border border-gray-300 text-gray-900 hover:border-amber-400'
+                      }`}
+                    >
+                      {day}
+                    </motion.button>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+
+          {/* Orçamento */}
+          <div>
+            <label className="text-sm font-bold text-gray-900 block mb-3">3. Orçamento esperado</label>
+            <input
+              type="range"
+              min="1500"
+              max="8000"
+              step="100"
+              value={price}
+              onChange={(e) => setPrice(parseInt(e.target.value))}
+              className="w-full h-2 bg-gray-300 rounded-lg appearance-none cursor-pointer accent-amber-600"
+            />
+            <div className="flex justify-between items-center mt-4">
+              <p className="text-xs text-gray-600">R$ 1.500</p>
+              <motion.div key={price} initial={{ scale: 0.8 }} animate={{ scale: 1 }} className="text-center">
+                <p className="text-3xl font-bold text-amber-600">R$ {price.toLocaleString('pt-BR')}</p>
+              </motion.div>
+              <p className="text-xs text-gray-600">R$ 8.000</p>
+            </div>
+          </div>
+
+          {/* Resumo */}
+          <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
+            <h3 className="font-bold text-gray-900 mb-3">Resumo do Orçamento</h3>
+            <div className="space-y-2 text-sm">
+              <div className="flex justify-between text-gray-700">
+                <span>Base:</span>
+                <span>R$ {price.toLocaleString('pt-BR')}</span>
+              </div>
+              {eventType === 'cerimonia_recepcao' && (
+                <div className="flex justify-between text-amber-700">
+                  <span>Diferencial:</span>
+                  <span>+ R$ 1.000</span>
+                </div>
+              )}
+              <div className="border-t border-amber-200 pt-2 mt-2 flex justify-between font-bold text-amber-900">
+                <span>TOTAL:</span>
+                <span>R$ {(price + (eventType === 'cerimonia_recepcao' ? 1000 : 0)).toLocaleString('pt-BR')}</span>
+              </div>
+            </div>
+          </div>
+
+          <motion.button
+            whileHover={{ scale: 1.02 }}
+            onClick={() => setStep(2)}
+            className="w-full bg-amber-600 text-white py-3 rounded-lg font-bold hover:bg-amber-700 transition-all"
+          >
+            Prosseguir →
+          </motion.button>
+        </div>
+      </div>
+    </motion.div>
+  );
+
+  // PASSO 3: LEAD QUALIFICATION (Visão do Músico)
+  const LeadQual = () => (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -20 }}
+      className="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800 p-6"
+    >
+      <div className="max-w-3xl mx-auto">
+        <button onClick={() => setStep(1)} className="flex items-center gap-2 text-amber-400 hover:text-amber-300 mb-6">
+          <ChevronLeft className="w-5 h-5" /> Voltar
         </button>
+
+        <h2 className="text-3xl font-bold text-white mb-2">📬 Novo Lead Chegou!</h2>
+        <p className="text-gray-400 mb-8">Aqui você vê TUDO sobre o cliente ANTES de agendar videochamada.</p>
+
+        <div className="bg-gradient-to-br from-slate-800 to-slate-700 rounded-xl border border-amber-500/30 p-8">
+          <div className="space-y-6">
+            <div className="border-b border-amber-500/20 pb-6">
+              <h3 className="text-2xl font-bold text-white mb-2">João & Maria</h3>
+              <p className="text-amber-400">Padrão de Casamento</p>
+            </div>
+
+            <div className="grid grid-cols-2 gap-6">
+              <div>
+                <p className="text-xs font-bold text-amber-300 uppercase mb-2">Data do Evento</p>
+                <p className="text-2xl font-bold text-white">20 de Dezembro</p>
+              </div>
+              <div>
+                <p className="text-xs font-bold text-amber-300 uppercase mb-2">Orçamento</p>
+                <p className="text-2xl font-bold text-white">R$ 4.000</p>
+              </div>
+              <div>
+                <p className="text-xs font-bold text-amber-300 uppercase mb-2">Estilo Preferido</p>
+                <p className="text-xl font-bold text-white">Sertanejo + Rock</p>
+              </div>
+              <div>
+                <p className="text-xs font-bold text-amber-300 uppercase mb-2">Tipo Evento</p>
+                <p className="text-xl font-bold text-white">Recepção Animada</p>
+              </div>
+            </div>
+
+            <div className="bg-amber-500/10 border border-amber-500/30 rounded-lg p-4">
+              <p className="text-xs font-bold text-amber-300 uppercase mb-2">Mensagem Deles</p>
+              <p className="text-white text-lg">
+                "Adoramos seu som! Queremos muita energia na festa. Temos algumas músicas obrigatórias mas vocês têm liberdade."
+              </p>
+            </div>
+
+            <div className="flex gap-3">
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                onClick={() => setStep(3)}
+                className="flex-1 bg-amber-600 text-white py-3 rounded-lg font-bold hover:bg-amber-700 transition-all flex items-center justify-center gap-2"
+              >
+                <Volume2 className="w-5 h-5" /> Agendar Videochamada
+              </motion.button>
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                className="px-6 bg-slate-700 text-white py-3 rounded-lg font-bold hover:bg-slate-600 transition-all"
+              >
+                Rejeitar
+              </motion.button>
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-8 bg-slate-700/50 border border-amber-500/20 rounded-lg p-4">
+          <p className="text-sm text-gray-300">
+            💡 <b>O que mudou:</b> Você NÃO recebe um lead aleatório. Recebe alguém que JÁ viu seus vídeos,
+            já sabe seu preço, já escolheu a data. Qualificado 100%.
+          </p>
+        </div>
+      </div>
+    </motion.div>
+  );
+
+  // PASSO 4: AGENDAR VIDEOCHAMADA
+  const AgendarVideo = () => (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -20 }}
+      className="min-h-screen bg-white p-6"
+    >
+      <div className="max-w-2xl mx-auto">
+        <button onClick={() => setStep(2)} className="flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-6">
+          <ChevronLeft className="w-5 h-5" /> Voltar
+        </button>
+
+        <h2 className="text-3xl font-bold text-gray-900 mb-2">📹 Escolha um Horário</h2>
+        <p className="text-gray-600 mb-8">Vamos marcar uma videochamada de 15 minutos. Você toca, a gente conhece seu estilo!</p>
+
+        <div className="bg-white rounded-xl shadow-sm border p-6 space-y-6">
+          <div>
+            <label className="text-sm font-bold text-gray-900 block mb-4">Horários Disponíveis</label>
+            <div className="space-y-3">
+              {[
+                { day: 'Domingo', times: ['9:00', '10:00', '15:00', '19:00'] },
+                { day: 'Segunda', times: ['19:00', '20:00'] },
+                { day: 'Terça', times: ['10:00', '19:00', '20:00'] }
+              ].map((slot, i) => (
+                <div key={i}>
+                  <p className="text-sm font-semibold text-gray-900 mb-2">{slot.day}</p>
+                  <div className="grid grid-cols-4 gap-2">
+                    {slot.times.map((time, j) => (
+                      <motion.button
+                        key={j}
+                        whileHover={{ scale: 1.05 }}
+                        className="py-2 px-3 bg-amber-50 border-2 border-amber-300 text-amber-700 rounded-lg font-semibold hover:bg-amber-100 transition-all"
+                      >
+                        {time}
+                      </motion.button>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <label className="text-sm font-bold text-gray-900 block mb-3">Mensagem (Opcional)</label>
+            <textarea
+              placeholder="Ex: Adoramos sertanejo, mas com toque de rock..."
+              className="w-full p-3 border border-gray-300 rounded-lg focus:border-amber-500 focus:outline-none"
+              rows="3"
+            />
+          </div>
+
+          <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 text-sm">
+            <p className="text-gray-900">
+              ✓ Link Zoom vai pro WhatsApp da pessoa<br/>
+              ✓ Lembrança automática 24h antes
+            </p>
+          </div>
+
+          <motion.button
+            whileHover={{ scale: 1.02 }}
+            onClick={() => setStep(4)}
+            className="w-full bg-amber-600 text-white py-3 rounded-lg font-bold hover:bg-amber-700 transition-all"
+          >
+            Confirmar Videochamada →
+          </motion.button>
+        </div>
+      </div>
+    </motion.div>
+  );
+
+  // PASSO 5: CONFIRMAÇÃO
+  const Confirmacao = () => (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -20 }}
+      className="min-h-screen bg-gradient-to-br from-green-50 to-emerald-50 p-6"
+    >
+      <div className="max-w-2xl mx-auto">
+        <button onClick={() => setStep(3)} className="flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-6">
+          <ChevronLeft className="w-5 h-5" /> Voltar
+        </button>
+
+        <div className="text-center mb-8">
+          <motion.div
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ type: 'spring', stiffness: 100 }}
+            className="inline-block"
+          >
+            <div className="w-20 h-20 bg-green-500 rounded-full flex items-center justify-center mb-6 mx-auto">
+              <span className="text-4xl">✓</span>
+            </div>
+          </motion.div>
+          <h2 className="text-4xl font-bold text-gray-900">Videochamada Confirmada!</h2>
+        </div>
+
+        <div className="bg-white rounded-xl shadow-sm border-2 border-green-200 p-8 mb-6">
+          <div className="space-y-6">
+            <div className="border-b pb-6">
+              <h3 className="text-2xl font-bold text-gray-900">João & Maria</h3>
+              <p className="text-green-600 font-semibold">Domingo, 15:00</p>
+            </div>
+
+            <div className="grid grid-cols-2 gap-6">
+              <div>
+                <p className="text-xs font-bold text-gray-600 uppercase mb-1">Data do Evento</p>
+                <p className="text-lg font-bold text-gray-900">20 de Dezembro</p>
+              </div>
+              <div>
+                <p className="text-xs font-bold text-gray-600 uppercase mb-1">Orçamento</p>
+                <p className="text-lg font-bold text-gray-900">R$ 4.000</p>
+              </div>
+            </div>
+
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+              <p className="text-xs font-bold text-blue-700 uppercase mb-2">🔗 Zoom Link</p>
+              <p className="text-sm text-blue-900 font-mono">https://zoom.us/j/123456789</p>
+              <p className="text-xs text-blue-700 mt-2">Link foi enviado no WhatsApp deles</p>
+            </div>
+
+            <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
+              <p className="text-sm text-amber-900">
+                📅 <b>Lembrança automática:</b> Sábado (24h antes) você e eles recebem notificação
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-white rounded-xl shadow-sm border p-6">
+          <h3 className="font-bold text-gray-900 mb-4">O que acontece agora?</h3>
+          <div className="space-y-3">
+            {[
+              { step: 1, text: 'Você entra no Zoom no horário combinado' },
+              { step: 2, text: 'Toca alguns trechos, conhece João & Maria' },
+              { step: 3, text: 'Se combina → "Vamos fechar?"' },
+              { step: 4, text: 'Sistema envia link de checkout automático' },
+              { step: 5, text: 'Cliente paga 50% e evento entra no calendário' }
+            ].map((item, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: i * 0.1 }}
+                className="flex items-start gap-3"
+              >
+                <div className="w-8 h-8 bg-amber-100 text-amber-700 rounded-full flex items-center justify-center font-bold text-sm flex-shrink-0">
+                  {item.step}
+                </div>
+                <p className="text-gray-700 pt-1">{item.text}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </motion.div>
+  );
+
+  const currentStep = [Landing, Configurador, LeadQual, AgendarVideo, Confirmacao][step];
+  const CurrentComponent = currentStep;
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800">
+      {/* Progress Bar */}
+      <div className="sticky top-0 z-50 bg-white border-b shadow-sm">
+        <div className="max-w-6xl mx-auto px-6 py-4">
+          <div className="flex items-center justify-between mb-4">
+            <h1 className="text-xl font-bold text-gray-900">Cadenza — Novo Fluxo</h1>
+            <div className="text-sm text-gray-600">
+              Passo {step + 1} de {steps.length}
+            </div>
+          </div>
+
+          <div className="flex gap-2">
+            {steps.map((s, i) => (
+              <motion.button
+                key={i}
+                onClick={() => setStep(i)}
+                initial={{ scale: 0.8 }}
+                animate={{ scale: 1 }}
+                className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold transition-all ${
+                  i <= step
+                    ? 'bg-amber-600 text-white'
+                    : 'bg-gray-200 text-gray-600 hover:bg-gray-300'
+                }`}
+              >
+                <span>{s.number}</span>
+                <span className="hidden sm:inline">{s.name}</span>
+              </motion.button>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Content */}
+      <AnimatePresence mode="wait">
+        <CurrentComponent key={step} />
+      </AnimatePresence>
     </div>
-
-    <!-- MENSAGENS -->
-    <div class="mensagem-cor-container">
-        <div id="mensagem-dourado" class="mensagem-cor dourado">
-            <span class="icone-grande">🌟</span>
-            <h3>🟡 O Céu e o Amor de Deus</h3>
-            <p>Deus criou o céu, um lugar perfeito e cheio de alegria! Ele nos ama imensamente e deseja que todos estejam com Ele para sempre. O amor de Deus é tão grande que Ele deu seu próprio Filho por nós!</p>
-            <div class="versiculo">
-                <strong>📖 João 3:16</strong>
-                "Porque Deus amou o mundo de tal maneira que deu o seu Filho unigênito, para que todo aquele que nele crê não pereça, mas tenha a vida eterna."
-            </div>
-        </div>
-
-        <div id="mensagem-preto" class="mensagem-cor preto">
-            <span class="icone-grande">😔</span>
-            <h3>⚫ O Pecado nos Separa de Deus</h3>
-            <p>O pecado é tudo o que fazemos que desagrada a Deus. Ele nos separa do amor de Deus e nos impede de viver plenamente com Ele. Mas Deus, em sua infinita bondade, preparou um caminho para nos perdoar!</p>
-            <div class="versiculo">
-                <strong>📖 Romanos 3:23</strong>
-                "Pois todos pecaram e estão destituídos da glória de Deus."
-            </div>
-        </div>
-
-        <div id="mensagem-vermelho" class="mensagem-cor vermelho">
-            <span class="icone-grande">❤️</span>
-            <h3>🔴 O Sangue de Jesus nos Purifica</h3>
-            <p>Jesus, o Filho de Deus, derramou seu sangue na cruz para nos libertar do pecado. O sangue de Jesus tem poder para limpar, perdoar e nos dar uma nova vida. Que presente maravilhoso!</p>
-            <div class="versiculo">
-                <strong>📖 1 João 1:7</strong>
-                "O sangue de Jesus, seu Filho, nos purifica de todo o pecado."
-            </div>
-        </div>
-
-        <div id="mensagem-branco" class="mensagem-cor branco">
-            <span class="icone-grande">🕊️</span>
-            <h3>⚪ O Perdão e o Coração Limpo</h3>
-            <p>Quando aceitamos Jesus como nosso Salvador, Deus nos perdoa completamente e limpa o nosso coração. Ficamos tão brancos quanto a neve! Somos feitos filhos de Deus e podemos ter certeza da vida eterna.</p>
-            <div class="versiculo">
-                <strong>📖 Salmo 51:7</strong>
-                "Purifica-me com hissopo, e ficarei puro; lava-me, e ficarei mais alvo do que a neve."
-            </div>
-        </div>
-
-        <div id="mensagem-verde" class="mensagem-cor verde">
-            <span class="icone-grande">🌱</span>
-            <h3>🟢 O Crescimento Espiritual</h3>
-            <p>Depois de aceitar Jesus, começamos uma nova vida! Assim como uma plantinha precisa de água e sol, nosso coração precisa ser alimentado com oração, leitura da Bíblia, louvor e comunhão na igreja. Vamos crescer juntos!</p>
-            <div class="versiculo">
-                <strong>📖 2 Pedro 3:18</strong>
-                "Antes, crescei na graça e no conhecimento de nosso Senhor e Salvador Jesus Cristo."
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- PLACAS -->
-<section class="placas-gincana">
-    <div class="placa">
-        <span class="icone-cor">🌟</span>
-        <h3 id="num1">0</h3>
-        <p>Crianças Sorrindo 🎉</p>
-    </div>
-    <div class="placa">
-        <span class="icone-cor">❤️</span>
-        <h3 id="num2">0</h3>
-        <p>Super Festas Feitas 🎂</p>
-    </div>
-    <div class="placa">
-        <span class="icone-cor">🌱</span>
-        <h3 id="num3">0</h3>
-        <p>Igrejas Visitadas ⛪</p>
-    </div>
-</section>
-
-<!-- SOBRE - COM FOTOS DOS TIOS -->
-<section id="sobre" class="toca-dos-tios">
-    <h2 class="titulo-ludico">Nossa <span class="dourado">Tripulação</span> <span class="vermelho">Mágica</span> ✨</h2>
-    <div class="tios-container">
-        <div class="bolha-tio">
-            <div class="avatar-divertido" style="padding: 0; overflow: hidden;">
-                <img src="assets/images/tio-romulo.jpg" alt="Tio Rômulo" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
-            </div>
-            <h3>Tio Rômulo</h3>
-            <p>O capitão da bagunça saudável! Toca violão, lidera gincanas malucas e ama contar as vitórias de Davi.</p>
-        </div>
-        <div class="bolha-tio">
-            <div class="avatar-divertido" style="padding: 0; overflow: hidden;">
-                <img src="assets/images/tia-angela.jpg" alt="Tia Ângela" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
-            </div>
-            <h3>Tia Ângela</h3>
-            <p>A fada das histórias! Cria cenários coloridos, dá vida aos fantoches e ensina lições lindas do coração de Deus.</p>
-        </div>
-    </div>
-</section>
-
-<!-- SERVIÇOS -->
-<section id="servicos" class="caixa-brinquedos">
-    <h2 class="titulo-ludico" style="text-align:center;">Nossas <span class="verde">Brincadeiras</span> <span class="dourado">Mágicas</span> 🧩</h2>
-    <div class="grid-brinquedos">
-        <div class="bloco-servico">
-            <div class="selo-icone"><i class="fa-solid fa-balloon"></i></div>
-            <h3>Super Festas Infantis</h3>
-            <p>Aniversários cheios de recreação ativa, escultura em balões e gincanas focadas em amizade verdadeira.</p>
-        </div>
-        <div class="bloco-servico">
-            <div class="selo-icone"><i class="fa-solid fa-guitar"></i></div>
-            <h3>Super Cultos Coloridos</h3>
-            <p>Pregações visuais feitas com dinâmicas e teatros onde a criança aprende a bíblia rindo e participando.</p>
-        </div>
-        <div class="bloco-servico">
-            <div class="selo-icone"><i class="fa-solid fa-ice-cream"></i></div>
-            <h3>EBF Espetacular</h3>
-            <p>A melhor Escola Bíblica de Férias do planeta! Dias seguidos cheios de oficinas criativas e muito louvor.</p>
-        </div>
-        <div class="bloco-servico">
-            <div class="selo-icone"><i class="fa-solid fa-theater-masks"></i></div>
-            <h3>Teatros e Fantoches</h3>
-            <p>Nossos bonecos contam as parábolas de Jesus de um jeito leve e muito engraçado que os pequenos decoram.</p>
-        </div>
-        <div class="bloco-servico">
-            <div class="selo-icone"><i class="fa-solid fa-volleyball"></i></div>
-            <h3>Circuitos Esportivos</h3>
-            <p>Brincadeiras de corrida, queimada adaptada e cabo de guerra ensinando o trabalho em equipe na fé.</p>
-        </div>
-        <div class="bloco-servico">
-            <div class="selo-icone"><i class="fa-solid fa-bolt"></i></div>
-            <h3>Louvores Explosivos</h3>
-            <p>Coreografias super fáceis e músicas contagiantes que botam todo mundo para pular na presença do Senhor.</p>
-        </div>
-    </div>
-</section>
-
-<!-- GALERIA -->
-<section id="galeria" class="bau-fotos">
-    <h2 class="titulo-ludico">Álbum de <span class="dourado">Aventuras</span> 📸</h2>
-    <div class="Varal-fotos">
-        <div class="foto-polaroid">
-            <div class="foto-mini"><span style="font-size: 4rem;">🥳</span></div>
-            <p>EBF Abençoada</p>
-        </div>
-        <div class="foto-polaroid">
-            <div class="foto-mini"><span style="font-size: 4rem;">🎭</span></div>
-            <p>Gargalhadas no Teatro</p>
-        </div>
-        <div class="foto-polaroid">
-            <div class="foto-mini"><span style="font-size: 4rem;">🎈</span></div>
-            <p>Festa Super Colorida</p>
-        </div>
-        <div class="foto-polaroid">
-            <div class="foto-mini"><span style="font-size: 4rem;">🙏</span></div>
-            <p>Momento de Oração</p>
-        </div>
-    </div>
-</section>
-
-<!-- DOAÇÕES -->
-<section id="cofrinhos" class="ZonadeApoio">
-    <h2 class="titulo-ludico" style="text-align:center;">Nosso <span class="dourado">Cofrinho</span> <span class="vermelho">Missionário</span> 🐷</h2>
-    <div class="cofrinhos-flex">
-        <div class="cofrinho">
-            <i class="fa-solid fa-wand-magic-sparkles" style="font-size:3rem; color:var(--dourado); margin-bottom:15px;"></i>
-            <h3>Contratar os Tios</h3>
-            <p style="margin: 15px 0 25px 0;">Acertou os detalhes com a gente no zap? Clique abaixo para pagar com total segurança.</p>
-            <a href="#" class="btn-MercadoPagoDivertido"><i class="fa-solid fa-piggy-bank"></i> Pagar Evento</a>
-        </div>
-        <div class="cofrinho">
-            <i class="fa-solid fa-heart" style="font-size:3rem; color:var(--vermelho-sangue); margin-bottom:15px;"></i>
-            <h3>Alimentar esse Projeto</h3>
-            <p style="margin: 15px 0;">Ajude a gente a comprar doces e materiais bíblicos para orfanatos e ações missionárias comunitárias!</p>
-            <div class="valores-gincana">
-                <button class="btn-ticket-valor ativo" data-valor="20">R$ 20</button>
-                <button class="btn-ticket-valor" data-valor="50">R$ 50</button>
-                <button class="btn-ticket-valor" data-valor="100">R$ 100</button>
-            </div>
-            <a href="#" class="btn-MercadoPagoDivertido vermelho" id="btn-doacao-ludica"><i class="fa-solid fa-gift"></i> Enviar Sementinha</a>
-        </div>
-    </div>
-</section>
-
-<!-- CONTATO -->
-<section id="contato" class="mapa-contato">
-    <h2 class="titulo-ludico" style="text-align:center;">Escreva uma <span class="dourado">Cartinha</span> ✉️</h2>
-    <div class="caixa-formulario">
-        <form id="formulario-fofo" novalidate>
-            <div style="margin-bottom:15px;">
-                <label for="nome" style="font-weight:bold;">Qual o seu nome, amiguinho(a)?</label>
-                <input type="text" id="nome" class="campo-fofo" required placeholder="Seu nome lindo...">
-                <div class="mensagem-erro" id="erro-nome">Por favor, digite seu nome.</div>
-            </div>
-            <div style="margin-bottom:15px;">
-                <label for="email" style="font-weight:bold;">Seu melhor E-mail</label>
-                <input type="email" id="email" class="campo-fofo" required placeholder="exemplo@email.com">
-                <div class="mensagem-erro" id="erro-email">Por favor, digite um e-mail válido.</div>
-            </div>
-            <div style="margin-bottom:15px;">
-                <label for="zap" style="font-weight:bold;">Número do Zap do Papai ou Mamãe</label>
-                <input type="tel" id="zap" class="campo-fofo" required placeholder="(00) 99999-9999">
-                <div class="mensagem-erro" id="erro-zap">Por favor, digite um telefone válido.</div>
-            </div>
-            <div style="margin-bottom:15px;">
-                <label for="festa" style="font-weight:bold;">Que tipo de festa/evento quer fazer?</label>
-                <select id="festa" class="campo-fofo" required>
-                    <option value="">Selecione uma opção...</option>
-                    <option value="Aniversario">Aniversário Animado</option>
-                    <option value="Culto">Culto ou Congresso Infantil</option>
-                    <option value="EBF">EBF de Férias</option>
-                    <option value="Outro">Outra Ideia Super Legal</option>
-                </select>
-                <div class="mensagem-erro" id="erro-festa">Por favor, selecione uma opção.</div>
-            </div>
-            <div style="margin-bottom:15px;">
-                <label for="texto" style="font-weight:bold;">Escreva o que você imagina para esse dia!</label>
-                <textarea id="texto" class="campo-fofo" style="height:100px;" required placeholder="Conte-nos o local, dia ou ideias loucas..."></textarea>
-                <div class="mensagem-erro" id="erro-texto">Por favor, conte um pouco sobre sua ideia.</div>
-            </div>
-            <button type="submit" class="btn-lançar" id="btn-enviar">
-                <span id="btn-texto">Lançar Mensagem! 🚀</span>
-                <div class="spinner" id="spinner"></div>
-            </button>
-        </form>
-    </div>
-</section>
-
-<!-- RODAPÉ -->
-<footer>
-    <div class="social-baloes">
-        <a href="#" class="balao-rede"><i class="fa-brands fa-instagram"></i></a>
-        <a href="#" class="balao-rede"><i class="fa-brands fa-youtube"></i></a>
-        <a href="#" class="balao-rede"><i class="fa-brands fa-whatsapp"></i></a>
-    </div>
-    <p class="footer-titulo">🌟 Com Jesus é MUITO mais legal! 🌟</p>
-    <p class="footer-versiculo">"Porque Deus amou o mundo de tal maneira..." (João 3:16)</p>
-    <p style="font-size:0.9rem; color:#A0AEC0; margin-top: 20px;">&copy; 2026 - Ministério Infantil Com Jesus é + Legal!</p>
-</footer>
-
-<!-- Notificação -->
-<div class="notificacao" id="notificacao">
-    <button class="fechar" id="fechar-notificacao">&times;</button>
-    <div style="display: flex; align-items: center;">
-        <i class="fa-solid fa-check-circle" style="color: var(--verde-crescimento); font-size: 2rem; margin-right: 10px;"></i>
-        <div>
-            <strong>Mensagem enviada! 🎉</strong>
-            <p style="font-size: 1rem; margin: 5px 0 0 0;">Sua cartinha voou como foguete! Respondemos em breve!</p>
-        </div>
-    </div>
-</div>
-
-<script src="assets/js/script.js"></script>
-</body>
-</html>
+  );
+}

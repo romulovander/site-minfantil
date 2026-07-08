@@ -1,531 +1,518 @@
-import React, { useState } from 'react';
-import { ChevronLeft, ChevronRight, Play, Star, Music, Clock, MapPin, Users, Volume2, ArrowRight } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadenza - Plataforma de Booking para Bandas</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif; }
+        @keyframes slideIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+        .slide-in { animation: slideIn 0.4s ease-out; }
+        .fade-in { animation: fadeIn 0.3s ease-out; }
+        .video-card { transition: transform 0.3s ease; }
+        .video-card:hover { transform: scale(1.05); }
+        .progress-bar { height: 4px; background: linear-gradient(90deg, #b8860b 0%, #d4af37 100%); }
+        input[type="range"] { accent-color: #b8860b; }
+    </style>
+</head>
+<body class="bg-white">
+    <div id="root"></div>
 
-export default function CadenzaFluxoCompleto() {
-  const [step, setStep] = useState(0);
-  const [selectedDate, setSelectedDate] = useState(null);
-  const [price, setPrice] = useState(3500);
-  const [eventType, setEventType] = useState('cerimonia');
-  const [selectedVideo, setSelectedVideo] = useState(null);
+    <script type="text/babel">
+        const { useState } = React;
 
-  const steps = [
-    { name: 'Landing', number: '1️⃣' },
-    { name: 'Configurador', number: '2️⃣' },
-    { name: 'Lead Qual.', number: '3️⃣' },
-    { name: 'Video Jamada', number: '4️⃣' },
-    { name: 'Confirmação', number: '5️⃣' },
-  ];
+        function CadenzaMockup() {
+            const [step, setStep] = useState(0);
+            const [selectedDate, setSelectedDate] = useState(null);
+            const [price, setPrice] = useState(3500);
+            const [eventType, setEventType] = useState('cerimonia');
+            const [duration, setDuration] = useState('6h');
 
-  // PASSO 1: LANDING
-  const Landing = () => (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -20 }}
-      className="min-h-screen bg-white"
-    >
-      {/* Header */}
-      <div className="bg-gradient-to-r from-amber-50 to-white p-6 border-b">
-        <div className="flex items-center gap-3 max-w-4xl mx-auto">
-          <Music className="w-8 h-8 text-amber-600" />
-          <h1 className="text-3xl font-bold text-gray-900">Banda XYZ</h1>
-          <span className="ml-auto text-sm text-gray-500">Casamentos & Eventos</span>
-        </div>
-      </div>
+            const steps = [
+                { name: 'Landing', icon: '🎬' },
+                { name: 'Configurador', icon: '⚙️' },
+                { name: 'Lead Qualif.', icon: '📬' },
+                { name: 'Video Jamada', icon: '📹' },
+                { name: 'Confirmação', icon: '✅' }
+            ];
 
-      {/* Hero Video */}
-      <div className="max-w-4xl mx-auto px-6 py-8">
-        <div className="bg-black rounded-xl overflow-hidden aspect-video flex items-center justify-center mb-8 relative group cursor-pointer">
-          <div className="absolute inset-0 bg-gradient-to-br from-amber-600/20 to-transparent"></div>
-          <Play className="w-20 h-20 text-white/80 group-hover:text-white transition-all" />
-          <p className="absolute bottom-4 left-4 text-white text-sm">30s • Ao vivo no último casamento</p>
-        </div>
+            // PASSO 1: LANDING
+            const Landing = () => (
+                <div className="slide-in min-h-screen bg-white">
+                    {/* Header */}
+                    <div className="bg-gradient-to-r from-amber-50 to-white p-6 border-b shadow-sm">
+                        <div className="max-w-4xl mx-auto flex items-center gap-3">
+                            <span className="text-3xl">🎵</span>
+                            <h1 className="text-3xl font-bold text-gray-900">Banda XYZ</h1>
+                            <span className="ml-auto text-sm text-gray-500">Casamentos & Eventos</span>
+                        </div>
+                    </div>
 
-        {/* Tagline */}
-        <h2 className="text-4xl font-bold text-gray-900 mb-4">
-          A banda que toca a música que você imaginou
-        </h2>
-        <p className="text-xl text-gray-600 mb-12">
-          Vídeos, reviews reais e som impecável. Confira se combina com seu estilo.
-        </p>
+                    {/* Content */}
+                    <div className="max-w-4xl mx-auto px-6 py-8">
+                        {/* Hero Video */}
+                        <div className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-xl overflow-hidden aspect-video flex items-center justify-center mb-8 relative">
+                            <div className="absolute inset-0 bg-gradient-to-br from-amber-600/20 to-transparent"></div>
+                            <span className="text-6xl">▶️</span>
+                            <p className="absolute bottom-4 left-4 text-white text-sm">30s • Ao vivo no último casamento</p>
+                        </div>
 
-        {/* Video Gallery */}
-        <div className="mb-12">
-          <h3 className="text-2xl font-bold text-gray-900 mb-6">Nossos Vídeos</h3>
-          <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-            {[
-              { title: 'Cerimônia Intimista', duration: '1:45', icon: '🎻' },
-              { title: 'Recepção Animada', duration: '2:30', icon: '🎸' },
-              { title: 'Nosso Som', duration: '2:00', icon: '🎵' },
-              { title: 'Vendo em Ação', duration: '0:45', icon: '👯' }
-            ].map((video, i) => (
-              <motion.button
-                key={i}
-                whileHover={{ scale: 1.05 }}
-                onClick={() => setSelectedVideo(video)}
-                className="bg-gray-100 rounded-lg p-4 text-center hover:bg-amber-100 transition-all group"
-              >
-                <div className="text-4xl mb-2 group-hover:scale-125 transition-transform">{video.icon}</div>
-                <p className="font-semibold text-gray-900 text-sm">{video.title}</p>
-                <p className="text-xs text-gray-600 mt-2">{video.duration}</p>
-              </motion.button>
-            ))}
-          </div>
-        </div>
+                        {/* Tagline */}
+                        <h2 className="text-4xl font-bold text-gray-900 mb-4">
+                            A banda que toca a música que você imaginou
+                        </h2>
+                        <p className="text-xl text-gray-600 mb-12">
+                            Vídeos, reviews reais e som impecável. Confira se combina com seu estilo.
+                        </p>
 
-        {/* Reviews */}
-        <div className="mb-12">
-          <h3 className="text-2xl font-bold text-gray-900 mb-6">Avaliações de Clientes</h3>
-          <div className="space-y-4">
-            {[
-              { name: 'João & Maria', rating: 5, text: 'Foram incríveis! Exatamente o que sonhamos.' },
-              { name: 'Carlos & Ana', rating: 5, text: 'Melhor decisão que tomamos. Toda a festa falou!' },
-              { name: 'Pedro & Lara', rating: 5, text: 'Profissionais, talentosos, humanizados.' }
-            ].map((review, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: i * 0.1 }}
-                className="bg-amber-50 p-4 rounded-lg border border-amber-200"
-              >
-                <div className="flex items-center gap-2 mb-2">
-                  <div className="flex">
-                    {[...Array(5)].map((_, j) => (
-                      <Star key={j} className="w-4 h-4 fill-amber-600 text-amber-600" />
-                    ))}
-                  </div>
-                  <span className="font-semibold text-gray-900">{review.name}</span>
+                        {/* Video Gallery */}
+                        <div className="mb-12">
+                            <h3 className="text-2xl font-bold text-gray-900 mb-6">Nossos Vídeos</h3>
+                            <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+                                {[
+                                    { title: 'Cerimônia Intimista', duration: '1:45', icon: '🎻' },
+                                    { title: 'Recepção Animada', duration: '2:30', icon: '🎸' },
+                                    { title: 'Nosso Som', duration: '2:00', icon: '🎵' },
+                                    { title: 'Vendo em Ação', duration: '0:45', icon: '👯' }
+                                ].map((video, i) => (
+                                    <div key={i} className="video-card bg-gray-100 rounded-lg p-4 text-center hover:bg-amber-100 cursor-pointer transition-all border-2 border-transparent hover:border-amber-400">
+                                        <div className="text-4xl mb-2">{video.icon}</div>
+                                        <p className="font-semibold text-gray-900 text-sm">{video.title}</p>
+                                        <p className="text-xs text-gray-600 mt-2">{video.duration}</p>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* Reviews */}
+                        <div className="mb-12">
+                            <h3 className="text-2xl font-bold text-gray-900 mb-6">Avaliações de Clientes</h3>
+                            <div className="space-y-4">
+                                {[
+                                    { name: 'João & Maria', text: 'Foram incríveis! Exatamente o que sonhamos.' },
+                                    { name: 'Carlos & Ana', text: 'Melhor decisão que tomamos. Toda a festa falou!' },
+                                    { name: 'Pedro & Lara', text: 'Profissionais, talentosos, humanizados.' }
+                                ].map((review, i) => (
+                                    <div key={i} className="bg-amber-50 p-4 rounded-lg border border-amber-200">
+                                        <div className="flex items-center gap-2 mb-2">
+                                            <div className="flex">⭐⭐⭐⭐⭐</div>
+                                            <span className="font-semibold text-gray-900">{review.name}</span>
+                                        </div>
+                                        <p className="text-gray-700">{review.text}</p>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* CTA */}
+                        <button
+                            onClick={() => setStep(1)}
+                            className="w-full bg-gradient-to-r from-amber-500 to-amber-600 text-white py-4 rounded-lg font-bold text-lg hover:shadow-lg transition-all hover:scale-105"
+                        >
+                            Quer saber se combina com seu casamento? →
+                        </button>
+                    </div>
                 </div>
-                <p className="text-gray-700">{review.text}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
+            );
 
-        {/* CTA */}
-        <motion.button
-          whileHover={{ scale: 1.02 }}
-          onClick={() => setStep(1)}
-          className="w-full bg-gradient-to-r from-amber-500 to-amber-600 text-white py-4 rounded-lg font-bold text-lg hover:shadow-lg transition-all"
-        >
-          Quer saber se combina com seu casamento? →
-        </motion.button>
-      </div>
-    </motion.div>
-  );
+            // PASSO 2: CONFIGURADOR
+            const Configurador = () => (
+                <div className="slide-in min-h-screen bg-gradient-to-br from-gray-50 to-white p-6">
+                    <div className="max-w-2xl mx-auto">
+                        <button onClick={() => setStep(0)} className="flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-6 font-semibold">
+                            ← Voltar
+                        </button>
 
-  // PASSO 2: CONFIGURADOR
-  const Configurador = () => (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -20 }}
-      className="min-h-screen bg-gradient-to-br from-gray-50 to-white p-6"
-    >
-      <div className="max-w-2xl mx-auto">
-        <button onClick={() => setStep(0)} className="flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-6">
-          <ChevronLeft className="w-5 h-5" /> Voltar
-        </button>
+                        <h2 className="text-3xl font-bold text-gray-900 mb-2">Vamos orçar seu evento?</h2>
+                        <p className="text-gray-600 mb-8">Responda 5 perguntas rápidas e veja o preço em tempo real.</p>
 
-        <h2 className="text-3xl font-bold text-gray-900 mb-2">Vamos orçar seu evento?</h2>
-        <p className="text-gray-600 mb-8">Responda 5 perguntas rápidas e veja o preço em tempo real.</p>
+                        <div className="bg-white rounded-xl shadow-sm border p-8 space-y-8">
+                            {/* Tipo de evento */}
+                            <div>
+                                <label className="text-sm font-bold text-gray-900 block mb-3">1️⃣ Tipo de evento</label>
+                                <div className="grid grid-cols-3 gap-2">
+                                    {[
+                                        { id: 'cerimonia', label: 'Cerimônia' },
+                                        { id: 'recepcao', label: 'Recepção' },
+                                        { id: 'cerimonia_recepcao', label: 'Ambos' }
+                                    ].map(type => (
+                                        <button
+                                            key={type.id}
+                                            onClick={() => setEventType(type.id)}
+                                            className={`px-4 py-2 rounded-lg font-medium transition-all ${
+                                                eventType === type.id
+                                                    ? 'bg-amber-600 text-white shadow-lg scale-105'
+                                                    : 'bg-gray-100 text-gray-900 hover:bg-gray-200'
+                                            }`}
+                                        >
+                                            {type.label}
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
 
-        <div className="bg-white rounded-xl shadow-sm border p-6 space-y-8">
-          {/* Tipo de evento */}
-          <div>
-            <label className="text-sm font-bold text-gray-900 block mb-3">1. Tipo de evento</label>
-            <div className="grid grid-cols-3 gap-2">
-              {[
-                { id: 'cerimonia', label: 'Cerimônia' },
-                { id: 'recepcao', label: 'Recepção' },
-                { id: 'cerimonia_recepcao', label: 'Ambos' }
-              ].map(type => (
-                <motion.button
-                  key={type.id}
-                  whileHover={{ scale: 1.05 }}
-                  onClick={() => setEventType(type.id)}
-                  className={`px-4 py-2 rounded-lg font-medium transition-all ${
-                    eventType === type.id
-                      ? 'bg-amber-600 text-white shadow-lg'
-                      : 'bg-gray-100 text-gray-900 hover:bg-gray-200'
-                  }`}
-                >
-                  {type.label}
-                </motion.button>
-              ))}
-            </div>
-          </div>
+                            {/* Data */}
+                            <div>
+                                <label className="text-sm font-bold text-gray-900 block mb-3">2️⃣ Data do evento</label>
+                                <div className="bg-gray-50 p-4 rounded-lg">
+                                    <p className="text-sm text-gray-600 mb-3">Dezembro 2024 (cinzas = bloqueadas)</p>
+                                    <div className="grid grid-cols-7 gap-2">
+                                        {['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'].map(day => (
+                                            <div key={day} className="text-center text-xs font-semibold text-gray-600 py-1">
+                                                {day}
+                                            </div>
+                                        ))}
+                                        {[...Array(30)].map((_, i) => {
+                                            const day = i + 1;
+                                            const blocked = [5, 6, 12, 13, 19, 20, 26, 27].includes(day);
+                                            const selected = selectedDate === day;
 
-          {/* Data */}
-          <div>
-            <label className="text-sm font-bold text-gray-900 block mb-3">2. Data do evento</label>
-            <div className="bg-gray-50 p-4 rounded-lg">
-              <p className="text-sm text-gray-600 mb-3">Dezembro 2024 (datas cinzas estão bloqueadas)</p>
-              <div className="grid grid-cols-7 gap-2">
-                {['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'].map(day => (
-                  <div key={day} className="text-center text-xs font-semibold text-gray-600 py-1">
-                    {day}
-                  </div>
-                ))}
-                {[...Array(30)].map((_, i) => {
-                  const day = i + 1;
-                  const blocked = [5, 6, 12, 13, 19, 20, 26, 27].includes(day);
-                  const selected = selectedDate === day;
+                                            return (
+                                                <button
+                                                    key={day}
+                                                    onClick={() => !blocked && setSelectedDate(day)}
+                                                    disabled={blocked}
+                                                    className={`h-8 rounded text-xs font-semibold transition-all ${
+                                                        selected
+                                                            ? 'bg-amber-600 text-white shadow-lg scale-110'
+                                                            : blocked
+                                                            ? 'bg-gray-300 text-gray-500 line-through cursor-not-allowed'
+                                                            : 'bg-white border border-gray-300 text-gray-900 hover:border-amber-400'
+                                                    }`}
+                                                >
+                                                    {day}
+                                                </button>
+                                            );
+                                        })}
+                                    </div>
+                                </div>
+                            </div>
 
-                  return (
-                    <motion.button
-                      key={day}
-                      onClick={() => !blocked && setSelectedDate(day)}
-                      disabled={blocked}
-                      whileHover={!blocked ? { scale: 1.1 } : {}}
-                      className={`h-8 rounded text-xs font-semibold transition-all ${
-                        selected
-                          ? 'bg-amber-600 text-white shadow-lg'
-                          : blocked
-                          ? 'bg-gray-300 text-gray-500 line-through cursor-not-allowed'
-                          : 'bg-white border border-gray-300 text-gray-900 hover:border-amber-400'
-                      }`}
-                    >
-                      {day}
-                    </motion.button>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
+                            {/* Duração */}
+                            <div>
+                                <label className="text-sm font-bold text-gray-900 block mb-3">3️⃣ Duração</label>
+                                <div className="grid grid-cols-3 gap-2">
+                                    {['4h', '6h', '8h+'].map(d => (
+                                        <button
+                                            key={d}
+                                            onClick={() => setDuration(d)}
+                                            className={`px-4 py-2 rounded-lg font-medium transition-all ${
+                                                duration === d
+                                                    ? 'bg-amber-600 text-white'
+                                                    : 'bg-gray-100 text-gray-900 hover:bg-gray-200'
+                                            }`}
+                                        >
+                                            {d}
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
 
-          {/* Orçamento */}
-          <div>
-            <label className="text-sm font-bold text-gray-900 block mb-3">3. Orçamento esperado</label>
-            <input
-              type="range"
-              min="1500"
-              max="8000"
-              step="100"
-              value={price}
-              onChange={(e) => setPrice(parseInt(e.target.value))}
-              className="w-full h-2 bg-gray-300 rounded-lg appearance-none cursor-pointer accent-amber-600"
-            />
-            <div className="flex justify-between items-center mt-4">
-              <p className="text-xs text-gray-600">R$ 1.500</p>
-              <motion.div key={price} initial={{ scale: 0.8 }} animate={{ scale: 1 }} className="text-center">
-                <p className="text-3xl font-bold text-amber-600">R$ {price.toLocaleString('pt-BR')}</p>
-              </motion.div>
-              <p className="text-xs text-gray-600">R$ 8.000</p>
-            </div>
-          </div>
+                            {/* Orçamento */}
+                            <div>
+                                <label className="text-sm font-bold text-gray-900 block mb-3">4️⃣ Orçamento esperado</label>
+                                <input
+                                    type="range"
+                                    min="1500"
+                                    max="8000"
+                                    step="100"
+                                    value={price}
+                                    onChange={(e) => setPrice(parseInt(e.target.value))}
+                                    className="w-full h-2 bg-gray-300 rounded-lg cursor-pointer"
+                                />
+                                <div className="flex justify-between items-center mt-4">
+                                    <p className="text-xs text-gray-600">R$ 1.500</p>
+                                    <div className="text-center">
+                                        <p className="text-3xl font-bold text-amber-600">R$ {price.toLocaleString('pt-BR')}</p>
+                                    </div>
+                                    <p className="text-xs text-gray-600">R$ 8.000</p>
+                                </div>
+                            </div>
 
-          {/* Resumo */}
-          <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
-            <h3 className="font-bold text-gray-900 mb-3">Resumo do Orçamento</h3>
-            <div className="space-y-2 text-sm">
-              <div className="flex justify-between text-gray-700">
-                <span>Base:</span>
-                <span>R$ {price.toLocaleString('pt-BR')}</span>
-              </div>
-              {eventType === 'cerimonia_recepcao' && (
-                <div className="flex justify-between text-amber-700">
-                  <span>Diferencial:</span>
-                  <span>+ R$ 1.000</span>
+                            {/* Resumo */}
+                            <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
+                                <h3 className="font-bold text-gray-900 mb-3">💰 Resumo do Orçamento</h3>
+                                <div className="space-y-2 text-sm">
+                                    <div className="flex justify-between text-gray-700">
+                                        <span>Base:</span>
+                                        <span>R$ {price.toLocaleString('pt-BR')}</span>
+                                    </div>
+                                    {eventType === 'cerimonia_recepcao' && (
+                                        <div className="flex justify-between text-amber-700">
+                                            <span>Diferencial:</span>
+                                            <span>+ R$ 1.000</span>
+                                        </div>
+                                    )}
+                                    <div className="border-t border-amber-200 pt-2 mt-2 flex justify-between font-bold text-amber-900">
+                                        <span>TOTAL:</span>
+                                        <span>R$ {(price + (eventType === 'cerimonia_recepcao' ? 1000 : 0)).toLocaleString('pt-BR')}</span>
+                                    </div>
+                                    <div className="flex justify-between text-xs text-amber-700">
+                                        <span>Sinal (50%):</span>
+                                        <span>R$ {(Math.round((price + (eventType === 'cerimonia_recepcao' ? 1000 : 0)) / 2)).toLocaleString('pt-BR')}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button
+                                onClick={() => setStep(2)}
+                                className="w-full bg-amber-600 text-white py-3 rounded-lg font-bold hover:bg-amber-700 transition-all hover:scale-105"
+                            >
+                                Prosseguir →
+                            </button>
+                        </div>
+                    </div>
                 </div>
-              )}
-              <div className="border-t border-amber-200 pt-2 mt-2 flex justify-between font-bold text-amber-900">
-                <span>TOTAL:</span>
-                <span>R$ {(price + (eventType === 'cerimonia_recepcao' ? 1000 : 0)).toLocaleString('pt-BR')}</span>
-              </div>
-            </div>
-          </div>
+            );
 
-          <motion.button
-            whileHover={{ scale: 1.02 }}
-            onClick={() => setStep(2)}
-            className="w-full bg-amber-600 text-white py-3 rounded-lg font-bold hover:bg-amber-700 transition-all"
-          >
-            Prosseguir →
-          </motion.button>
-        </div>
-      </div>
-    </motion.div>
-  );
+            // PASSO 3: LEAD QUALIFICATION
+            const LeadQual = () => (
+                <div className="slide-in min-h-screen bg-gradient-to-br from-slate-900 to-slate-800 p-6">
+                    <div className="max-w-3xl mx-auto">
+                        <button onClick={() => setStep(1)} className="flex items-center gap-2 text-amber-400 hover:text-amber-300 mb-6 font-semibold">
+                            ← Voltar
+                        </button>
 
-  // PASSO 3: LEAD QUALIFICATION (Visão do Músico)
-  const LeadQual = () => (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -20 }}
-      className="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800 p-6"
-    >
-      <div className="max-w-3xl mx-auto">
-        <button onClick={() => setStep(1)} className="flex items-center gap-2 text-amber-400 hover:text-amber-300 mb-6">
-          <ChevronLeft className="w-5 h-5" /> Voltar
-        </button>
+                        <h2 className="text-3xl font-bold text-white mb-2">📬 Novo Lead Chegou!</h2>
+                        <p className="text-gray-400 mb-8">Aqui você vê TUDO sobre o cliente ANTES de agendar.</p>
 
-        <h2 className="text-3xl font-bold text-white mb-2">📬 Novo Lead Chegou!</h2>
-        <p className="text-gray-400 mb-8">Aqui você vê TUDO sobre o cliente ANTES de agendar videochamada.</p>
+                        <div className="bg-gradient-to-br from-slate-800 to-slate-700 rounded-xl border border-amber-500/30 p-8 shadow-2xl">
+                            <div className="space-y-6">
+                                <div className="border-b border-amber-500/20 pb-6">
+                                    <h3 className="text-2xl font-bold text-white mb-2">João & Maria</h3>
+                                    <p className="text-amber-400">Padrão de Casamento</p>
+                                </div>
 
-        <div className="bg-gradient-to-br from-slate-800 to-slate-700 rounded-xl border border-amber-500/30 p-8">
-          <div className="space-y-6">
-            <div className="border-b border-amber-500/20 pb-6">
-              <h3 className="text-2xl font-bold text-white mb-2">João & Maria</h3>
-              <p className="text-amber-400">Padrão de Casamento</p>
-            </div>
+                                <div className="grid grid-cols-2 gap-6">
+                                    <div>
+                                        <p className="text-xs font-bold text-amber-300 uppercase mb-2">📅 Data</p>
+                                        <p className="text-2xl font-bold text-white">20 de Dezembro</p>
+                                    </div>
+                                    <div>
+                                        <p className="text-xs font-bold text-amber-300 uppercase mb-2">💰 Orçamento</p>
+                                        <p className="text-2xl font-bold text-white">R$ 4.000</p>
+                                    </div>
+                                    <div>
+                                        <p className="text-xs font-bold text-amber-300 uppercase mb-2">🎵 Estilo</p>
+                                        <p className="text-xl font-bold text-white">Sertanejo + Rock</p>
+                                    </div>
+                                    <div>
+                                        <p className="text-xs font-bold text-amber-300 uppercase mb-2">🎉 Tipo</p>
+                                        <p className="text-xl font-bold text-white">Recepção Animada</p>
+                                    </div>
+                                </div>
 
-            <div className="grid grid-cols-2 gap-6">
-              <div>
-                <p className="text-xs font-bold text-amber-300 uppercase mb-2">Data do Evento</p>
-                <p className="text-2xl font-bold text-white">20 de Dezembro</p>
-              </div>
-              <div>
-                <p className="text-xs font-bold text-amber-300 uppercase mb-2">Orçamento</p>
-                <p className="text-2xl font-bold text-white">R$ 4.000</p>
-              </div>
-              <div>
-                <p className="text-xs font-bold text-amber-300 uppercase mb-2">Estilo Preferido</p>
-                <p className="text-xl font-bold text-white">Sertanejo + Rock</p>
-              </div>
-              <div>
-                <p className="text-xs font-bold text-amber-300 uppercase mb-2">Tipo Evento</p>
-                <p className="text-xl font-bold text-white">Recepção Animada</p>
-              </div>
-            </div>
+                                <div className="bg-amber-500/10 border border-amber-500/30 rounded-lg p-4">
+                                    <p className="text-xs font-bold text-amber-300 uppercase mb-2">💬 Mensagem</p>
+                                    <p className="text-white text-lg">
+                                        "Adoramos seu som! Queremos muita energia. Temos músicas obrigatórias mas vocês têm liberdade."
+                                    </p>
+                                </div>
 
-            <div className="bg-amber-500/10 border border-amber-500/30 rounded-lg p-4">
-              <p className="text-xs font-bold text-amber-300 uppercase mb-2">Mensagem Deles</p>
-              <p className="text-white text-lg">
-                "Adoramos seu som! Queremos muita energia na festa. Temos algumas músicas obrigatórias mas vocês têm liberdade."
-              </p>
-            </div>
+                                <div className="flex gap-3">
+                                    <button
+                                        onClick={() => setStep(3)}
+                                        className="flex-1 bg-amber-600 text-white py-3 rounded-lg font-bold hover:bg-amber-700 transition-all hover:scale-105"
+                                    >
+                                        📹 Agendar Videochamada
+                                    </button>
+                                    <button className="px-6 bg-slate-700 text-white py-3 rounded-lg font-bold hover:bg-slate-600 transition-all">
+                                        Rejeitar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
 
-            <div className="flex gap-3">
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                onClick={() => setStep(3)}
-                className="flex-1 bg-amber-600 text-white py-3 rounded-lg font-bold hover:bg-amber-700 transition-all flex items-center justify-center gap-2"
-              >
-                <Volume2 className="w-5 h-5" /> Agendar Videochamada
-              </motion.button>
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                className="px-6 bg-slate-700 text-white py-3 rounded-lg font-bold hover:bg-slate-600 transition-all"
-              >
-                Rejeitar
-              </motion.button>
-            </div>
-          </div>
-        </div>
-
-        <div className="mt-8 bg-slate-700/50 border border-amber-500/20 rounded-lg p-4">
-          <p className="text-sm text-gray-300">
-            💡 <b>O que mudou:</b> Você NÃO recebe um lead aleatório. Recebe alguém que JÁ viu seus vídeos,
-            já sabe seu preço, já escolheu a data. Qualificado 100%.
-          </p>
-        </div>
-      </div>
-    </motion.div>
-  );
-
-  // PASSO 4: AGENDAR VIDEOCHAMADA
-  const AgendarVideo = () => (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -20 }}
-      className="min-h-screen bg-white p-6"
-    >
-      <div className="max-w-2xl mx-auto">
-        <button onClick={() => setStep(2)} className="flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-6">
-          <ChevronLeft className="w-5 h-5" /> Voltar
-        </button>
-
-        <h2 className="text-3xl font-bold text-gray-900 mb-2">📹 Escolha um Horário</h2>
-        <p className="text-gray-600 mb-8">Vamos marcar uma videochamada de 15 minutos. Você toca, a gente conhece seu estilo!</p>
-
-        <div className="bg-white rounded-xl shadow-sm border p-6 space-y-6">
-          <div>
-            <label className="text-sm font-bold text-gray-900 block mb-4">Horários Disponíveis</label>
-            <div className="space-y-3">
-              {[
-                { day: 'Domingo', times: ['9:00', '10:00', '15:00', '19:00'] },
-                { day: 'Segunda', times: ['19:00', '20:00'] },
-                { day: 'Terça', times: ['10:00', '19:00', '20:00'] }
-              ].map((slot, i) => (
-                <div key={i}>
-                  <p className="text-sm font-semibold text-gray-900 mb-2">{slot.day}</p>
-                  <div className="grid grid-cols-4 gap-2">
-                    {slot.times.map((time, j) => (
-                      <motion.button
-                        key={j}
-                        whileHover={{ scale: 1.05 }}
-                        className="py-2 px-3 bg-amber-50 border-2 border-amber-300 text-amber-700 rounded-lg font-semibold hover:bg-amber-100 transition-all"
-                      >
-                        {time}
-                      </motion.button>
-                    ))}
-                  </div>
+                        <div className="mt-8 bg-slate-700/50 border border-amber-500/20 rounded-lg p-4">
+                            <p className="text-sm text-gray-300">
+                                💡 <b>O que mudou:</b> Lead JÁ viu seus vídeos, sabe seu preço, escolheu data. 100% qualificado.
+                            </p>
+                        </div>
+                    </div>
                 </div>
-              ))}
-            </div>
-          </div>
+            );
 
-          <div>
-            <label className="text-sm font-bold text-gray-900 block mb-3">Mensagem (Opcional)</label>
-            <textarea
-              placeholder="Ex: Adoramos sertanejo, mas com toque de rock..."
-              className="w-full p-3 border border-gray-300 rounded-lg focus:border-amber-500 focus:outline-none"
-              rows="3"
-            />
-          </div>
+            // PASSO 4: AGENDAR VIDEO
+            const AgendarVideo = () => (
+                <div className="slide-in min-h-screen bg-white p-6">
+                    <div className="max-w-2xl mx-auto">
+                        <button onClick={() => setStep(2)} className="flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-6 font-semibold">
+                            ← Voltar
+                        </button>
 
-          <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 text-sm">
-            <p className="text-gray-900">
-              ✓ Link Zoom vai pro WhatsApp da pessoa<br/>
-              ✓ Lembrança automática 24h antes
-            </p>
-          </div>
+                        <h2 className="text-3xl font-bold text-gray-900 mb-2">📹 Escolha um Horário</h2>
+                        <p className="text-gray-600 mb-8">Marca 15 min de videochamada. Você toca, conhece o estilo deles!</p>
 
-          <motion.button
-            whileHover={{ scale: 1.02 }}
-            onClick={() => setStep(4)}
-            className="w-full bg-amber-600 text-white py-3 rounded-lg font-bold hover:bg-amber-700 transition-all"
-          >
-            Confirmar Videochamada →
-          </motion.button>
-        </div>
-      </div>
-    </motion.div>
-  );
+                        <div className="bg-white rounded-xl shadow-sm border p-8 space-y-6">
+                            <div>
+                                <label className="text-sm font-bold text-gray-900 block mb-4">Horários Disponíveis</label>
+                                <div className="space-y-3">
+                                    {[
+                                        { day: 'Domingo', times: ['9:00', '10:00', '15:00', '19:00'] },
+                                        { day: 'Segunda', times: ['19:00', '20:00'] },
+                                        { day: 'Terça', times: ['10:00', '19:00', '20:00'] }
+                                    ].map((slot, i) => (
+                                        <div key={i}>
+                                            <p className="text-sm font-semibold text-gray-900 mb-2">{slot.day}</p>
+                                            <div className="grid grid-cols-4 gap-2">
+                                                {slot.times.map((time, j) => (
+                                                    <button
+                                                        key={j}
+                                                        className="py-2 px-3 bg-amber-50 border-2 border-amber-300 text-amber-700 rounded-lg font-semibold hover:bg-amber-100 transition-all hover:scale-105"
+                                                    >
+                                                        {time}
+                                                    </button>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
 
-  // PASSO 5: CONFIRMAÇÃO
-  const Confirmacao = () => (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -20 }}
-      className="min-h-screen bg-gradient-to-br from-green-50 to-emerald-50 p-6"
-    >
-      <div className="max-w-2xl mx-auto">
-        <button onClick={() => setStep(3)} className="flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-6">
-          <ChevronLeft className="w-5 h-5" /> Voltar
-        </button>
+                            <div>
+                                <label className="text-sm font-bold text-gray-900 block mb-3">Mensagem (Opcional)</label>
+                                <textarea
+                                    placeholder="Ex: Adoramos sertanejo, mas com toque de rock..."
+                                    className="w-full p-3 border border-gray-300 rounded-lg focus:border-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-100"
+                                    rows="3"
+                                ></textarea>
+                            </div>
 
-        <div className="text-center mb-8">
-          <motion.div
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            transition={{ type: 'spring', stiffness: 100 }}
-            className="inline-block"
-          >
-            <div className="w-20 h-20 bg-green-500 rounded-full flex items-center justify-center mb-6 mx-auto">
-              <span className="text-4xl">✓</span>
-            </div>
-          </motion.div>
-          <h2 className="text-4xl font-bold text-gray-900">Videochamada Confirmada!</h2>
-        </div>
+                            <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 text-sm">
+                                <p className="text-gray-900">
+                                    ✓ Link Zoom vai pro WhatsApp<br/>
+                                    ✓ Lembrança automática 24h antes
+                                </p>
+                            </div>
 
-        <div className="bg-white rounded-xl shadow-sm border-2 border-green-200 p-8 mb-6">
-          <div className="space-y-6">
-            <div className="border-b pb-6">
-              <h3 className="text-2xl font-bold text-gray-900">João & Maria</h3>
-              <p className="text-green-600 font-semibold">Domingo, 15:00</p>
-            </div>
-
-            <div className="grid grid-cols-2 gap-6">
-              <div>
-                <p className="text-xs font-bold text-gray-600 uppercase mb-1">Data do Evento</p>
-                <p className="text-lg font-bold text-gray-900">20 de Dezembro</p>
-              </div>
-              <div>
-                <p className="text-xs font-bold text-gray-600 uppercase mb-1">Orçamento</p>
-                <p className="text-lg font-bold text-gray-900">R$ 4.000</p>
-              </div>
-            </div>
-
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-              <p className="text-xs font-bold text-blue-700 uppercase mb-2">🔗 Zoom Link</p>
-              <p className="text-sm text-blue-900 font-mono">https://zoom.us/j/123456789</p>
-              <p className="text-xs text-blue-700 mt-2">Link foi enviado no WhatsApp deles</p>
-            </div>
-
-            <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
-              <p className="text-sm text-amber-900">
-                📅 <b>Lembrança automática:</b> Sábado (24h antes) você e eles recebem notificação
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <div className="bg-white rounded-xl shadow-sm border p-6">
-          <h3 className="font-bold text-gray-900 mb-4">O que acontece agora?</h3>
-          <div className="space-y-3">
-            {[
-              { step: 1, text: 'Você entra no Zoom no horário combinado' },
-              { step: 2, text: 'Toca alguns trechos, conhece João & Maria' },
-              { step: 3, text: 'Se combina → "Vamos fechar?"' },
-              { step: 4, text: 'Sistema envia link de checkout automático' },
-              { step: 5, text: 'Cliente paga 50% e evento entra no calendário' }
-            ].map((item, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: i * 0.1 }}
-                className="flex items-start gap-3"
-              >
-                <div className="w-8 h-8 bg-amber-100 text-amber-700 rounded-full flex items-center justify-center font-bold text-sm flex-shrink-0">
-                  {item.step}
+                            <button
+                                onClick={() => setStep(4)}
+                                className="w-full bg-amber-600 text-white py-3 rounded-lg font-bold hover:bg-amber-700 transition-all hover:scale-105"
+                            >
+                                Confirmar Videochamada →
+                            </button>
+                        </div>
+                    </div>
                 </div>
-                <p className="text-gray-700 pt-1">{item.text}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </div>
-    </motion.div>
-  );
+            );
 
-  const currentStep = [Landing, Configurador, LeadQual, AgendarVideo, Confirmacao][step];
-  const CurrentComponent = currentStep;
+            // PASSO 5: CONFIRMAÇÃO
+            const Confirmacao = () => (
+                <div className="slide-in min-h-screen bg-gradient-to-br from-green-50 to-emerald-50 p-6">
+                    <div className="max-w-2xl mx-auto">
+                        <button onClick={() => setStep(3)} className="flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-6 font-semibold">
+                            ← Voltar
+                        </button>
 
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-800">
-      {/* Progress Bar */}
-      <div className="sticky top-0 z-50 bg-white border-b shadow-sm">
-        <div className="max-w-6xl mx-auto px-6 py-4">
-          <div className="flex items-center justify-between mb-4">
-            <h1 className="text-xl font-bold text-gray-900">Cadenza — Novo Fluxo</h1>
-            <div className="text-sm text-gray-600">
-              Passo {step + 1} de {steps.length}
-            </div>
-          </div>
+                        <div className="text-center mb-8">
+                            <div className="inline-block w-20 h-20 bg-green-500 rounded-full flex items-center justify-center mb-6 text-4xl">
+                                ✓
+                            </div>
+                            <h2 className="text-4xl font-bold text-gray-900">Videochamada Confirmada!</h2>
+                        </div>
 
-          <div className="flex gap-2">
-            {steps.map((s, i) => (
-              <motion.button
-                key={i}
-                onClick={() => setStep(i)}
-                initial={{ scale: 0.8 }}
-                animate={{ scale: 1 }}
-                className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold transition-all ${
-                  i <= step
-                    ? 'bg-amber-600 text-white'
-                    : 'bg-gray-200 text-gray-600 hover:bg-gray-300'
-                }`}
-              >
-                <span>{s.number}</span>
-                <span className="hidden sm:inline">{s.name}</span>
-              </motion.button>
-            ))}
-          </div>
-        </div>
-      </div>
+                        <div className="bg-white rounded-xl shadow-sm border-2 border-green-200 p-8 mb-6">
+                            <div className="space-y-6">
+                                <div className="border-b pb-6">
+                                    <h3 className="text-2xl font-bold text-gray-900">João & Maria</h3>
+                                    <p className="text-green-600 font-semibold">📅 Domingo, 15:00</p>
+                                </div>
 
-      {/* Content */}
-      <AnimatePresence mode="wait">
-        <CurrentComponent key={step} />
-      </AnimatePresence>
-    </div>
-  );
-}
+                                <div className="grid grid-cols-2 gap-6">
+                                    <div>
+                                        <p className="text-xs font-bold text-gray-600 uppercase mb-1">Data do Evento</p>
+                                        <p className="text-lg font-bold text-gray-900">20 de Dezembro</p>
+                                    </div>
+                                    <div>
+                                        <p className="text-xs font-bold text-gray-600 uppercase mb-1">Orçamento</p>
+                                        <p className="text-lg font-bold text-gray-900">R$ 4.000</p>
+                                    </div>
+                                </div>
+
+                                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                                    <p className="text-xs font-bold text-blue-700 uppercase mb-2">🔗 Zoom Link</p>
+                                    <p className="text-sm text-blue-900 font-mono">https://zoom.us/j/123456789</p>
+                                    <p className="text-xs text-blue-700 mt-2">Link foi enviado no WhatsApp deles</p>
+                                </div>
+
+                                <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
+                                    <p className="text-sm text-amber-900">
+                                        📅 <b>Lembrança automática:</b> Sábado (24h antes)
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="bg-white rounded-xl shadow-sm border p-6">
+                            <h3 className="font-bold text-gray-900 mb-4">O que acontece agora?</h3>
+                            <div className="space-y-3">
+                                {[
+                                    '1️⃣ Você entra no Zoom no horário combinado',
+                                    '2️⃣ Toca trechos, conhece João & Maria',
+                                    '3️⃣ Se combina → "Vamos fechar?"',
+                                    '4️⃣ Sistema envia link de checkout automático',
+                                    '5️⃣ Cliente paga 50% e evento entra no calendário'
+                                ].map((item, i) => (
+                                    <div key={i} className="flex items-start gap-3">
+                                        <span className="text-lg">{item[0]}</span>
+                                        <p className="text-gray-700 pt-1">{item.substring(1)}</p>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+
+            const currentStep = [Landing, Configurador, LeadQual, AgendarVideo, Confirmacao][step];
+            const CurrentComponent = currentStep;
+
+            return (
+                <div className="min-h-screen bg-white">
+                    {/* Progress Bar */}
+                    <div className="sticky top-0 z-50 bg-white border-b shadow-sm">
+                        <div className="max-w-6xl mx-auto px-6 py-4">
+                            <div className="flex items-center justify-between mb-4">
+                                <h1 className="text-xl font-bold text-gray-900">🎵 Cadenza — Novo Fluxo</h1>
+                                <div className="text-sm text-gray-600">
+                                    Passo {step + 1} de {steps.length}
+                                </div>
+                            </div>
+
+                            <div className="flex gap-2 overflow-x-auto">
+                                {steps.map((s, i) => (
+                                    <button
+                                        key={i}
+                                        onClick={() => setStep(i)}
+                                        className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold transition-all whitespace-nowrap ${
+                                            i <= step
+                                                ? 'bg-amber-600 text-white'
+                                                : 'bg-gray-200 text-gray-600 hover:bg-gray-300'
+                                        }`}
+                                    >
+                                        <span>{s.icon}</span>
+                                        <span className="hidden sm:inline">{s.name}</span>
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Content */}
+                    <div className="fade-in">
+                        <CurrentComponent />
+                    </div>
+                </div>
+            );
+        }
+
+        ReactDOM.render(<CadenzaMockup />, document.getElementById('root'));
+    </script>
+</body>
+</html>

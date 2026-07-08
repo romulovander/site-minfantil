@@ -3,114 +3,110 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadenza - Plataforma de Booking para Bandas</title>
+    <title>Cadenza 2.0 - Sistema Completo com ChatBot WhatsApp</title>
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto; }
         @keyframes slideIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.7; } }
         .slide-in { animation: slideIn 0.4s ease-out; }
         .fade-in { animation: fadeIn 0.3s ease-out; }
-        .video-card { transition: transform 0.3s ease; }
-        .video-card:hover { transform: scale(1.05); }
-        .progress-bar { height: 4px; background: linear-gradient(90deg, #b8860b 0%, #d4af37 100%); }
+        .message-bubble { animation: slideIn 0.3s ease-out; }
         input[type="range"] { accent-color: #b8860b; }
+        .whatsapp-bubble { max-width: 85%; word-wrap: break-word; }
+        .whatsapp-sent { background: #e3f2fd; border-radius: 18px 4px 18px 18px; margin-left: auto; }
+        .whatsapp-received { background: #f5f5f5; border-radius: 4px 18px 18px 18px; margin-right: auto; }
     </style>
 </head>
-<body class="bg-white">
+<body class="bg-gray-50">
     <div id="root"></div>
 
     <script type="text/babel">
         const { useState } = React;
 
-        function CadenzaMockup() {
+        function CadenzaCompleto() {
             const [step, setStep] = useState(0);
             const [selectedDate, setSelectedDate] = useState(null);
             const [price, setPrice] = useState(3500);
             const [eventType, setEventType] = useState('cerimonia');
-            const [duration, setDuration] = useState('6h');
+            const [chatMessages, setChatMessages] = useState([]);
+            const [showChat, setShowChat] = useState(false);
 
             const steps = [
-                { name: 'Landing', icon: '🎬' },
-                { name: 'Configurador', icon: '⚙️' },
-                { name: 'Lead Qualif.', icon: '📬' },
-                { name: 'Video Jamada', icon: '📹' },
-                { name: 'Confirmação', icon: '✅' }
+                { name: 'Landing', icon: '🎬', desc: 'Conhece a banda' },
+                { name: 'Configurador', icon: '⚙️', desc: 'Orçamento mágico' },
+                { name: 'ChatBot WhatsApp', icon: '💬', desc: 'Conversa IA' },
+                { name: 'Video Jamada', icon: '📹', desc: 'Conhecimento real' },
+                { name: 'Dashboard', icon: '📊', desc: 'Controle total' }
             ];
 
-            // PASSO 1: LANDING
+            // Mensagens do ChatBot
+            const chatbotMessages = [
+                { sender: 'bot', text: 'Oi João! 👋 Aqui é a Banda XYZ 🎵\n\nVi que você quer orçamento pro casamento. Vamos lá!\n\nVocê está interessado em:\nA) Cerimônia\nB) Festa/Recepção\nC) Ambos', delay: 0 },
+                { sender: 'user', text: 'Ambos!', delay: 2 },
+                { sender: 'bot', text: 'Bacana! 🎉\n\nVocê já tem algum instrumento preferido?\n(Exemplo: violino, voz bonita)\n\nOu prefere que a gente sugira?', delay: 3 },
+                { sender: 'user', text: 'Ah, prefiro que vocês sugiram!', delay: 4 },
+                { sender: 'bot', text: 'Perfeito! 🎵\n\nBaseado no que você falou, recomendo nosso TRIO CLÁSSICO:\n\n🎻 Violão + Voz + Teclado + Violino\n\n📹 Vê aqui uma cerimônia que fizemos:\n[VIDEO DO TRIO]\n\nIsso atende sua expectativa?', delay: 5 },
+                { sender: 'user', text: 'Adorei! Muito bom mesmo!', delay: 6 },
+                { sender: 'bot', text: 'Maravilha! 🌟\n\nAgora preciso de mais informações:\n\n📍 Qual é o local do seu casamento?\n(Ex: Salão das Flores, Sítio do Bom)', delay: 7 }
+            ];
+
+            // PÁGINA 1: LANDING
             const Landing = () => (
                 <div className="slide-in min-h-screen bg-white">
-                    {/* Header */}
-                    <div className="bg-gradient-to-r from-amber-50 to-white p-6 border-b shadow-sm">
-                        <div className="max-w-4xl mx-auto flex items-center gap-3">
+                    <div className="bg-gradient-to-r from-amber-50 to-white p-6 border-b shadow-sm sticky top-0 z-40">
+                        <div className="max-w-5xl mx-auto flex items-center gap-3">
                             <span className="text-3xl">🎵</span>
                             <h1 className="text-3xl font-bold text-gray-900">Banda XYZ</h1>
                             <span className="ml-auto text-sm text-gray-500">Casamentos & Eventos</span>
                         </div>
                     </div>
 
-                    {/* Content */}
-                    <div className="max-w-4xl mx-auto px-6 py-8">
-                        {/* Hero Video */}
-                        <div className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-xl overflow-hidden aspect-video flex items-center justify-center mb-8 relative">
-                            <div className="absolute inset-0 bg-gradient-to-br from-amber-600/20 to-transparent"></div>
+                    <div className="max-w-5xl mx-auto px-6 py-12">
+                        <div className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-xl overflow-hidden aspect-video flex items-center justify-center mb-12 relative">
                             <span className="text-6xl">▶️</span>
                             <p className="absolute bottom-4 left-4 text-white text-sm">30s • Ao vivo no último casamento</p>
                         </div>
 
-                        {/* Tagline */}
-                        <h2 className="text-4xl font-bold text-gray-900 mb-4">
-                            A banda que toca a música que você imaginou
-                        </h2>
-                        <p className="text-xl text-gray-600 mb-12">
-                            Vídeos, reviews reais e som impecável. Confira se combina com seu estilo.
-                        </p>
+                        <h2 className="text-5xl font-bold text-gray-900 mb-4">A banda que toca a música que você imaginou</h2>
+                        <p className="text-xl text-gray-600 mb-12">Vídeos, reviews reais e som impecável. Confira se combina com seu estilo.</p>
 
-                        {/* Video Gallery */}
                         <div className="mb-12">
                             <h3 className="text-2xl font-bold text-gray-900 mb-6">Nossos Vídeos</h3>
                             <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
                                 {[
-                                    { title: 'Cerimônia Intimista', duration: '1:45', icon: '🎻' },
-                                    { title: 'Recepção Animada', duration: '2:30', icon: '🎸' },
-                                    { title: 'Nosso Som', duration: '2:00', icon: '🎵' },
-                                    { title: 'Vendo em Ação', duration: '0:45', icon: '👯' }
-                                ].map((video, i) => (
-                                    <div key={i} className="video-card bg-gray-100 rounded-lg p-4 text-center hover:bg-amber-100 cursor-pointer transition-all border-2 border-transparent hover:border-amber-400">
-                                        <div className="text-4xl mb-2">{video.icon}</div>
-                                        <p className="font-semibold text-gray-900 text-sm">{video.title}</p>
-                                        <p className="text-xs text-gray-600 mt-2">{video.duration}</p>
+                                    { title: 'Cerimônia Intimista', icon: '🎻' },
+                                    { title: 'Recepção Animada', icon: '🎸' },
+                                    { title: 'Nosso Som', icon: '🎵' },
+                                    { title: 'Depoimentos', icon: '💬' }
+                                ].map((v, i) => (
+                                    <div key={i} className="bg-gray-100 rounded-lg p-6 text-center hover:bg-amber-100 transition-all cursor-pointer border-2 border-transparent hover:border-amber-400">
+                                        <div className="text-5xl mb-3">{v.icon}</div>
+                                        <p className="font-semibold text-gray-900">{v.title}</p>
                                     </div>
                                 ))}
                             </div>
                         </div>
 
-                        {/* Reviews */}
                         <div className="mb-12">
-                            <h3 className="text-2xl font-bold text-gray-900 mb-6">Avaliações de Clientes</h3>
+                            <h3 className="text-2xl font-bold text-gray-900 mb-6">Reviews de Clientes</h3>
                             <div className="space-y-4">
                                 {[
                                     { name: 'João & Maria', text: 'Foram incríveis! Exatamente o que sonhamos.' },
-                                    { name: 'Carlos & Ana', text: 'Melhor decisão que tomamos. Toda a festa falou!' },
-                                    { name: 'Pedro & Lara', text: 'Profissionais, talentosos, humanizados.' }
-                                ].map((review, i) => (
+                                    { name: 'Carlos & Ana', text: 'Melhor decisão que tomamos!' }
+                                ].map((r, i) => (
                                     <div key={i} className="bg-amber-50 p-4 rounded-lg border border-amber-200">
-                                        <div className="flex items-center gap-2 mb-2">
-                                            <div className="flex">⭐⭐⭐⭐⭐</div>
-                                            <span className="font-semibold text-gray-900">{review.name}</span>
-                                        </div>
-                                        <p className="text-gray-700">{review.text}</p>
+                                        <div className="flex gap-2 mb-2">⭐⭐⭐⭐⭐ <span className="font-semibold text-gray-900">{r.name}</span></div>
+                                        <p className="text-gray-700">{r.text}</p>
                                     </div>
                                 ))}
                             </div>
                         </div>
 
-                        {/* CTA */}
                         <button
                             onClick={() => setStep(1)}
                             className="w-full bg-gradient-to-r from-amber-500 to-amber-600 text-white py-4 rounded-lg font-bold text-lg hover:shadow-lg transition-all hover:scale-105"
@@ -121,58 +117,50 @@
                 </div>
             );
 
-            // PASSO 2: CONFIGURADOR
+            // PÁGINA 2: CONFIGURADOR
             const Configurador = () => (
                 <div className="slide-in min-h-screen bg-gradient-to-br from-gray-50 to-white p-6">
                     <div className="max-w-2xl mx-auto">
-                        <button onClick={() => setStep(0)} className="flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-6 font-semibold">
-                            ← Voltar
-                        </button>
+                        <button onClick={() => setStep(0)} className="flex items-center gap-2 text-gray-600 mb-6 font-semibold hover:text-gray-900">← Voltar</button>
 
-                        <h2 className="text-3xl font-bold text-gray-900 mb-2">Vamos orçar seu evento?</h2>
-                        <p className="text-gray-600 mb-8">Responda 5 perguntas rápidas e veja o preço em tempo real.</p>
+                        <h2 className="text-3xl font-bold text-gray-900 mb-2">Vamos criar seu orçamento?</h2>
+                        <p className="text-gray-600 mb-8">Responda 4 perguntas e veja o preço em TEMPO REAL.</p>
 
                         <div className="bg-white rounded-xl shadow-sm border p-8 space-y-8">
-                            {/* Tipo de evento */}
                             <div>
                                 <label className="text-sm font-bold text-gray-900 block mb-3">1️⃣ Tipo de evento</label>
                                 <div className="grid grid-cols-3 gap-2">
                                     {[
                                         { id: 'cerimonia', label: 'Cerimônia' },
                                         { id: 'recepcao', label: 'Recepção' },
-                                        { id: 'cerimonia_recepcao', label: 'Ambos' }
-                                    ].map(type => (
+                                        { id: 'ambos', label: 'Ambos' }
+                                    ].map(t => (
                                         <button
-                                            key={type.id}
-                                            onClick={() => setEventType(type.id)}
+                                            key={t.id}
+                                            onClick={() => setEventType(t.id)}
                                             className={`px-4 py-2 rounded-lg font-medium transition-all ${
-                                                eventType === type.id
-                                                    ? 'bg-amber-600 text-white shadow-lg scale-105'
+                                                eventType === t.id
+                                                    ? 'bg-amber-600 text-white shadow-lg'
                                                     : 'bg-gray-100 text-gray-900 hover:bg-gray-200'
                                             }`}
                                         >
-                                            {type.label}
+                                            {t.label}
                                         </button>
                                     ))}
                                 </div>
                             </div>
 
-                            {/* Data */}
                             <div>
                                 <label className="text-sm font-bold text-gray-900 block mb-3">2️⃣ Data do evento</label>
                                 <div className="bg-gray-50 p-4 rounded-lg">
-                                    <p className="text-sm text-gray-600 mb-3">Dezembro 2024 (cinzas = bloqueadas)</p>
                                     <div className="grid grid-cols-7 gap-2">
-                                        {['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'].map(day => (
-                                            <div key={day} className="text-center text-xs font-semibold text-gray-600 py-1">
-                                                {day}
-                                            </div>
+                                        {['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'].map(d => (
+                                            <div key={d} className="text-center text-xs font-semibold text-gray-600 py-1">{d}</div>
                                         ))}
                                         {[...Array(30)].map((_, i) => {
                                             const day = i + 1;
                                             const blocked = [5, 6, 12, 13, 19, 20, 26, 27].includes(day);
                                             const selected = selectedDate === day;
-
                                             return (
                                                 <button
                                                     key={day}
@@ -180,7 +168,7 @@
                                                     disabled={blocked}
                                                     className={`h-8 rounded text-xs font-semibold transition-all ${
                                                         selected
-                                                            ? 'bg-amber-600 text-white shadow-lg scale-110'
+                                                            ? 'bg-amber-600 text-white shadow-lg'
                                                             : blocked
                                                             ? 'bg-gray-300 text-gray-500 line-through cursor-not-allowed'
                                                             : 'bg-white border border-gray-300 text-gray-900 hover:border-amber-400'
@@ -194,29 +182,8 @@
                                 </div>
                             </div>
 
-                            {/* Duração */}
                             <div>
-                                <label className="text-sm font-bold text-gray-900 block mb-3">3️⃣ Duração</label>
-                                <div className="grid grid-cols-3 gap-2">
-                                    {['4h', '6h', '8h+'].map(d => (
-                                        <button
-                                            key={d}
-                                            onClick={() => setDuration(d)}
-                                            className={`px-4 py-2 rounded-lg font-medium transition-all ${
-                                                duration === d
-                                                    ? 'bg-amber-600 text-white'
-                                                    : 'bg-gray-100 text-gray-900 hover:bg-gray-200'
-                                            }`}
-                                        >
-                                            {d}
-                                        </button>
-                                    ))}
-                                </div>
-                            </div>
-
-                            {/* Orçamento */}
-                            <div>
-                                <label className="text-sm font-bold text-gray-900 block mb-3">4️⃣ Orçamento esperado</label>
+                                <label className="text-sm font-bold text-gray-900 block mb-3">3️⃣ Orçamento esperado</label>
                                 <input
                                     type="range"
                                     min="1500"
@@ -229,260 +196,265 @@
                                 <div className="flex justify-between items-center mt-4">
                                     <p className="text-xs text-gray-600">R$ 1.500</p>
                                     <div className="text-center">
-                                        <p className="text-3xl font-bold text-amber-600">R$ {price.toLocaleString('pt-BR')}</p>
+                                        <p className="text-4xl font-bold text-amber-600">R$ {price.toLocaleString('pt-BR')}</p>
                                     </div>
                                     <p className="text-xs text-gray-600">R$ 8.000</p>
                                 </div>
                             </div>
 
-                            {/* Resumo */}
                             <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
-                                <h3 className="font-bold text-gray-900 mb-3">💰 Resumo do Orçamento</h3>
+                                <h3 className="font-bold text-gray-900 mb-3">💰 Resumo</h3>
                                 <div className="space-y-2 text-sm">
                                     <div className="flex justify-between text-gray-700">
                                         <span>Base:</span>
                                         <span>R$ {price.toLocaleString('pt-BR')}</span>
                                     </div>
-                                    {eventType === 'cerimonia_recepcao' && (
+                                    {eventType === 'ambos' && (
                                         <div className="flex justify-between text-amber-700">
-                                            <span>Diferencial:</span>
+                                            <span>Multi-evento:</span>
                                             <span>+ R$ 1.000</span>
                                         </div>
                                     )}
-                                    <div className="border-t border-amber-200 pt-2 mt-2 flex justify-between font-bold text-amber-900">
+                                    <div className="border-t border-amber-200 pt-2 flex justify-between font-bold text-amber-900">
                                         <span>TOTAL:</span>
-                                        <span>R$ {(price + (eventType === 'cerimonia_recepcao' ? 1000 : 0)).toLocaleString('pt-BR')}</span>
-                                    </div>
-                                    <div className="flex justify-between text-xs text-amber-700">
-                                        <span>Sinal (50%):</span>
-                                        <span>R$ {(Math.round((price + (eventType === 'cerimonia_recepcao' ? 1000 : 0)) / 2)).toLocaleString('pt-BR')}</span>
+                                        <span>R$ {(price + (eventType === 'ambos' ? 1000 : 0)).toLocaleString('pt-BR')}</span>
                                     </div>
                                 </div>
                             </div>
 
                             <button
                                 onClick={() => setStep(2)}
-                                className="w-full bg-amber-600 text-white py-3 rounded-lg font-bold hover:bg-amber-700 transition-all hover:scale-105"
+                                className="w-full bg-amber-600 text-white py-3 rounded-lg font-bold hover:bg-amber-700 transition-all"
                             >
-                                Prosseguir →
+                                Prosseguir para o ChatBot →
                             </button>
                         </div>
                     </div>
                 </div>
             );
 
-            // PASSO 3: LEAD QUALIFICATION
-            const LeadQual = () => (
-                <div className="slide-in min-h-screen bg-gradient-to-br from-slate-900 to-slate-800 p-6">
-                    <div className="max-w-3xl mx-auto">
-                        <button onClick={() => setStep(1)} className="flex items-center gap-2 text-amber-400 hover:text-amber-300 mb-6 font-semibold">
-                            ← Voltar
-                        </button>
-
-                        <h2 className="text-3xl font-bold text-white mb-2">📬 Novo Lead Chegou!</h2>
-                        <p className="text-gray-400 mb-8">Aqui você vê TUDO sobre o cliente ANTES de agendar.</p>
-
-                        <div className="bg-gradient-to-br from-slate-800 to-slate-700 rounded-xl border border-amber-500/30 p-8 shadow-2xl">
-                            <div className="space-y-6">
-                                <div className="border-b border-amber-500/20 pb-6">
-                                    <h3 className="text-2xl font-bold text-white mb-2">João & Maria</h3>
-                                    <p className="text-amber-400">Padrão de Casamento</p>
-                                </div>
-
-                                <div className="grid grid-cols-2 gap-6">
-                                    <div>
-                                        <p className="text-xs font-bold text-amber-300 uppercase mb-2">📅 Data</p>
-                                        <p className="text-2xl font-bold text-white">20 de Dezembro</p>
-                                    </div>
-                                    <div>
-                                        <p className="text-xs font-bold text-amber-300 uppercase mb-2">💰 Orçamento</p>
-                                        <p className="text-2xl font-bold text-white">R$ 4.000</p>
-                                    </div>
-                                    <div>
-                                        <p className="text-xs font-bold text-amber-300 uppercase mb-2">🎵 Estilo</p>
-                                        <p className="text-xl font-bold text-white">Sertanejo + Rock</p>
-                                    </div>
-                                    <div>
-                                        <p className="text-xs font-bold text-amber-300 uppercase mb-2">🎉 Tipo</p>
-                                        <p className="text-xl font-bold text-white">Recepção Animada</p>
-                                    </div>
-                                </div>
-
-                                <div className="bg-amber-500/10 border border-amber-500/30 rounded-lg p-4">
-                                    <p className="text-xs font-bold text-amber-300 uppercase mb-2">💬 Mensagem</p>
-                                    <p className="text-white text-lg">
-                                        "Adoramos seu som! Queremos muita energia. Temos músicas obrigatórias mas vocês têm liberdade."
-                                    </p>
-                                </div>
-
-                                <div className="flex gap-3">
-                                    <button
-                                        onClick={() => setStep(3)}
-                                        className="flex-1 bg-amber-600 text-white py-3 rounded-lg font-bold hover:bg-amber-700 transition-all hover:scale-105"
-                                    >
-                                        📹 Agendar Videochamada
-                                    </button>
-                                    <button className="px-6 bg-slate-700 text-white py-3 rounded-lg font-bold hover:bg-slate-600 transition-all">
-                                        Rejeitar
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="mt-8 bg-slate-700/50 border border-amber-500/20 rounded-lg p-4">
-                            <p className="text-sm text-gray-300">
-                                💡 <b>O que mudou:</b> Lead JÁ viu seus vídeos, sabe seu preço, escolheu data. 100% qualificado.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            );
-
-            // PASSO 4: AGENDAR VIDEO
-            const AgendarVideo = () => (
-                <div className="slide-in min-h-screen bg-white p-6">
+            // PÁGINA 3: CHATBOT WHATSAPP
+            const ChatBot = () => (
+                <div className="slide-in min-h-screen bg-gradient-to-br from-green-50 to-white p-6">
                     <div className="max-w-2xl mx-auto">
-                        <button onClick={() => setStep(2)} className="flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-6 font-semibold">
-                            ← Voltar
-                        </button>
+                        <button onClick={() => setStep(1)} className="flex items-center gap-2 text-gray-600 mb-6 font-semibold hover:text-gray-900">← Voltar</button>
 
-                        <h2 className="text-3xl font-bold text-gray-900 mb-2">📹 Escolha um Horário</h2>
-                        <p className="text-gray-600 mb-8">Marca 15 min de videochamada. Você toca, conhece o estilo deles!</p>
+                        <h2 className="text-3xl font-bold text-gray-900 mb-2">💬 Conversando com a Banda via ChatBot IA</h2>
+                        <p className="text-gray-600 mb-6">O chatbot inteligente faz perguntas, mostra vídeos e conduz a negociação AUTOMATICAMENTE.</p>
 
-                        <div className="bg-white rounded-xl shadow-sm border p-8 space-y-6">
-                            <div>
-                                <label className="text-sm font-bold text-gray-900 block mb-4">Horários Disponíveis</label>
-                                <div className="space-y-3">
-                                    {[
-                                        { day: 'Domingo', times: ['9:00', '10:00', '15:00', '19:00'] },
-                                        { day: 'Segunda', times: ['19:00', '20:00'] },
-                                        { day: 'Terça', times: ['10:00', '19:00', '20:00'] }
-                                    ].map((slot, i) => (
-                                        <div key={i}>
-                                            <p className="text-sm font-semibold text-gray-900 mb-2">{slot.day}</p>
-                                            <div className="grid grid-cols-4 gap-2">
-                                                {slot.times.map((time, j) => (
-                                                    <button
-                                                        key={j}
-                                                        className="py-2 px-3 bg-amber-50 border-2 border-amber-300 text-amber-700 rounded-lg font-semibold hover:bg-amber-100 transition-all hover:scale-105"
-                                                    >
-                                                        {time}
-                                                    </button>
-                                                ))}
-                                            </div>
+                        <div className="bg-white rounded-xl shadow-lg overflow-hidden border-2 border-green-500 h-96 flex flex-col">
+                            {/* Chat Header */}
+                            <div className="bg-green-600 text-white p-4">
+                                <h3 className="font-bold flex items-center gap-2">
+                                    <span>🎵 Banda XYZ</span>
+                                    <span className="w-2 h-2 bg-green-300 rounded-full animate-pulse"></span>
+                                </h3>
+                                <p className="text-xs text-green-100">Online</p>
+                            </div>
+
+                            {/* Chat Messages */}
+                            <div className="flex-1 overflow-y-auto p-4 space-y-3 bg-gray-50">
+                                {chatbotMessages.slice(0, 7).map((msg, i) => (
+                                    <div key={i} className={`fade-in ${msg.sender === 'user' ? 'flex justify-end' : 'flex justify-start'}`}>
+                                        <div className={`whatsapp-bubble p-3 rounded-lg text-sm whitespace-pre-line ${
+                                            msg.sender === 'user'
+                                                ? 'whatsapp-sent text-gray-900 font-medium'
+                                                : 'whatsapp-received text-gray-800'
+                                        }`}>
+                                            {msg.text}
                                         </div>
-                                    ))}
-                                </div>
-                            </div>
-
-                            <div>
-                                <label className="text-sm font-bold text-gray-900 block mb-3">Mensagem (Opcional)</label>
-                                <textarea
-                                    placeholder="Ex: Adoramos sertanejo, mas com toque de rock..."
-                                    className="w-full p-3 border border-gray-300 rounded-lg focus:border-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-100"
-                                    rows="3"
-                                ></textarea>
-                            </div>
-
-                            <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 text-sm">
-                                <p className="text-gray-900">
-                                    ✓ Link Zoom vai pro WhatsApp<br/>
-                                    ✓ Lembrança automática 24h antes
-                                </p>
-                            </div>
-
-                            <button
-                                onClick={() => setStep(4)}
-                                className="w-full bg-amber-600 text-white py-3 rounded-lg font-bold hover:bg-amber-700 transition-all hover:scale-105"
-                            >
-                                Confirmar Videochamada →
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            );
-
-            // PASSO 5: CONFIRMAÇÃO
-            const Confirmacao = () => (
-                <div className="slide-in min-h-screen bg-gradient-to-br from-green-50 to-emerald-50 p-6">
-                    <div className="max-w-2xl mx-auto">
-                        <button onClick={() => setStep(3)} className="flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-6 font-semibold">
-                            ← Voltar
-                        </button>
-
-                        <div className="text-center mb-8">
-                            <div className="inline-block w-20 h-20 bg-green-500 rounded-full flex items-center justify-center mb-6 text-4xl">
-                                ✓
-                            </div>
-                            <h2 className="text-4xl font-bold text-gray-900">Videochamada Confirmada!</h2>
-                        </div>
-
-                        <div className="bg-white rounded-xl shadow-sm border-2 border-green-200 p-8 mb-6">
-                            <div className="space-y-6">
-                                <div className="border-b pb-6">
-                                    <h3 className="text-2xl font-bold text-gray-900">João & Maria</h3>
-                                    <p className="text-green-600 font-semibold">📅 Domingo, 15:00</p>
-                                </div>
-
-                                <div className="grid grid-cols-2 gap-6">
-                                    <div>
-                                        <p className="text-xs font-bold text-gray-600 uppercase mb-1">Data do Evento</p>
-                                        <p className="text-lg font-bold text-gray-900">20 de Dezembro</p>
-                                    </div>
-                                    <div>
-                                        <p className="text-xs font-bold text-gray-600 uppercase mb-1">Orçamento</p>
-                                        <p className="text-lg font-bold text-gray-900">R$ 4.000</p>
-                                    </div>
-                                </div>
-
-                                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                                    <p className="text-xs font-bold text-blue-700 uppercase mb-2">🔗 Zoom Link</p>
-                                    <p className="text-sm text-blue-900 font-mono">https://zoom.us/j/123456789</p>
-                                    <p className="text-xs text-blue-700 mt-2">Link foi enviado no WhatsApp deles</p>
-                                </div>
-
-                                <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
-                                    <p className="text-sm text-amber-900">
-                                        📅 <b>Lembrança automática:</b> Sábado (24h antes)
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="bg-white rounded-xl shadow-sm border p-6">
-                            <h3 className="font-bold text-gray-900 mb-4">O que acontece agora?</h3>
-                            <div className="space-y-3">
-                                {[
-                                    '1️⃣ Você entra no Zoom no horário combinado',
-                                    '2️⃣ Toca trechos, conhece João & Maria',
-                                    '3️⃣ Se combina → "Vamos fechar?"',
-                                    '4️⃣ Sistema envia link de checkout automático',
-                                    '5️⃣ Cliente paga 50% e evento entra no calendário'
-                                ].map((item, i) => (
-                                    <div key={i} className="flex items-start gap-3">
-                                        <span className="text-lg">{item[0]}</span>
-                                        <p className="text-gray-700 pt-1">{item.substring(1)}</p>
                                     </div>
                                 ))}
                             </div>
+
+                            {/* Chat Input */}
+                            <div className="bg-gray-100 p-3 border-t flex gap-2">
+                                <input type="text" placeholder="Digite sua mensagem..." className="flex-1 rounded-full px-4 py-2 border-none bg-white" />
+                                <button className="bg-green-600 text-white rounded-full w-10 h-10 flex items-center justify-center">➤</button>
+                            </div>
                         </div>
+
+                        <div className="mt-8 bg-blue-50 border-l-4 border-blue-500 p-4">
+                            <p className="font-bold text-blue-900 mb-2">✨ O que o ChatBot faz:</p>
+                            <ul className="text-sm text-blue-800 space-y-1">
+                                <li>✓ Faz perguntas inteligentes baseadas nas respostas anteriores</li>
+                                <li>✓ Mostra vídeos do repertório (cerimônia, recepção, etc)</li>
+                                <li>✓ Sugere pacotes baseado no perfil do cliente</li>
+                                <li>✓ Cria expectativa SEM mostrar preço (deixa pro especialista)</li>
+                                <li>✓ Agenda automaticamente a videochamada</li>
+                                <li>✓ Tudo 100% AUTOMÁTICO - a banda pode dormir!</li>
+                            </ul>
+                        </div>
+
+                        <button
+                            onClick={() => setStep(3)}
+                            className="w-full mt-8 bg-amber-600 text-white py-3 rounded-lg font-bold hover:bg-amber-700 transition-all"
+                        >
+                            Próximo: Videochamada com Especialista →
+                        </button>
                     </div>
                 </div>
             );
 
-            const currentStep = [Landing, Configurador, LeadQual, AgendarVideo, Confirmacao][step];
-            const CurrentComponent = currentStep;
+            // PÁGINA 4: VIDEO JAMADA
+            const VideoJamada = () => (
+                <div className="slide-in min-h-screen bg-gradient-to-br from-purple-50 to-white p-6">
+                    <div className="max-w-2xl mx-auto">
+                        <button onClick={() => setStep(2)} className="flex items-center gap-2 text-gray-600 mb-6 font-semibold hover:text-gray-900">← Voltar</button>
+
+                        <h2 className="text-3xl font-bold text-gray-900 mb-2">📹 Video Jamada - A Magia Acontece</h2>
+                        <p className="text-gray-600 mb-8">Aqui é onde você conhece o cliente pessoalmente, toca alguns trechos e FECHA a venda.</p>
+
+                        <div className="space-y-6">
+                            <div className="bg-gradient-to-br from-purple-600 to-purple-700 text-white rounded-xl p-6">
+                                <h3 className="text-2xl font-bold mb-4">João & Maria</h3>
+                                <div className="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <p className="text-xs opacity-80 mb-1">📅 Data</p>
+                                        <p className="text-xl font-bold">20 de Dezembro</p>
+                                    </div>
+                                    <div>
+                                        <p className="text-xs opacity-80 mb-1">💰 Orçamento</p>
+                                        <p className="text-xl font-bold">R$ 4.000</p>
+                                    </div>
+                                    <div>
+                                        <p className="text-xs opacity-80 mb-1">🎵 Estilo</p>
+                                        <p className="text-lg font-bold">Sertanejo + Rock</p>
+                                    </div>
+                                    <div>
+                                        <p className="text-xs opacity-80 mb-1">🎉 Tipo</p>
+                                        <p className="text-lg font-bold">Ambos</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="bg-gray-50 border-2 border-gray-300 rounded-lg p-6">
+                                <h3 className="font-bold text-gray-900 mb-3">📹 Zoom Video</h3>
+                                <div className="bg-gray-900 aspect-video rounded-lg flex items-center justify-center mb-4">
+                                    <span className="text-6xl">👥</span>
+                                </div>
+                                <p className="text-sm text-gray-600">Você está tocando, mostrando o repertório. Cliente vê você pessoalmente.</p>
+                            </div>
+
+                            <div className="bg-green-50 border border-green-200 rounded-lg p-6">
+                                <h3 className="font-bold text-green-900 mb-4">Se o cliente disser SIM:</h3>
+                                <div className="space-y-2 text-sm text-green-800">
+                                    <p>✓ Sistema envia link de pagamento automático</p>
+                                    <p>✓ Cliente paga 50% (sinal) no app</p>
+                                    <p>✓ Contrato é assinado digitalmente</p>
+                                    <p>✓ Você vê no Dashboard: "RESERVADO" ✅</p>
+                                    <p>✓ 3 dias antes: cobrança automática do 50% restante</p>
+                                </div>
+                            </div>
+
+                            <div className="bg-gray-100 border border-gray-300 rounded-lg p-6">
+                                <h3 className="font-bold text-gray-900 mb-4">Se o cliente disser "Preciso pensar":</h3>
+                                <div className="space-y-2 text-sm text-gray-700">
+                                    <p>✓ Você marca como "Não combinou"</p>
+                                    <p>✓ Sistema aprende por quê (estilo? preço?)</p>
+                                    <p>✓ Próxima vez você rejeita parecido rápido</p>
+                                    <p>✓ Menos tempo perdido!</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button
+                            onClick={() => setStep(4)}
+                            className="w-full mt-8 bg-amber-600 text-white py-3 rounded-lg font-bold hover:bg-amber-700 transition-all"
+                        >
+                            Próximo: Seu Dashboard de Controle →
+                        </button>
+                    </div>
+                </div>
+            );
+
+            // PÁGINA 5: DASHBOARD
+            const Dashboard = () => (
+                <div className="slide-in min-h-screen bg-gradient-to-br from-slate-900 to-slate-800 p-6">
+                    <div className="max-w-4xl mx-auto">
+                        <button onClick={() => setStep(3)} className="flex items-center gap-2 text-amber-400 mb-6 font-semibold hover:text-amber-300">← Voltar</button>
+
+                        <h2 className="text-3xl font-bold text-white mb-2">📊 Seu Dashboard - Controle Total</h2>
+                        <p className="text-gray-300 mb-8">Uma visão 360° de tudo que está acontecendo. Você vê tudo em um lugar.</p>
+
+                        <div className="grid grid-cols-4 gap-4 mb-8">
+                            <div className="bg-gradient-to-br from-green-500 to-green-600 rounded-lg p-4 text-white">
+                                <p className="text-xs opacity-80 mb-1">Conversas Iniciadas</p>
+                                <p className="text-3xl font-bold">47</p>
+                            </div>
+                            <div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg p-4 text-white">
+                                <p className="text-xs opacity-80 mb-1">Video Agendadas</p>
+                                <p className="text-3xl font-bold">12</p>
+                            </div>
+                            <div className="bg-gradient-to-br from-amber-500 to-amber-600 rounded-lg p-4 text-white">
+                                <p className="text-xs opacity-80 mb-1">Pronto pra Fechar</p>
+                                <p className="text-3xl font-bold">5</p>
+                            </div>
+                            <div className="bg-gradient-to-br from-purple-500 to-purple-600 rounded-lg p-4 text-white">
+                                <p className="text-xs opacity-80 mb-1">Conversão</p>
+                                <p className="text-3xl font-bold">68%</p>
+                            </div>
+                        </div>
+
+                        <div className="bg-slate-700 rounded-lg p-6 mb-8 border border-amber-500/30">
+                            <h3 className="text-white font-bold mb-4 text-lg">📋 PIPELINE (Status dos Leads)</h3>
+                            
+                            <div className="space-y-3">
+                                <div className="bg-slate-600 p-3 rounded-lg border-l-4 border-blue-500">
+                                    <p className="text-white font-semibold">📱 CONVERSAS ATIVAS (6)</p>
+                                    <p className="text-xs text-gray-300 mt-1">João & Maria • Sertanejo • Domingo 15h</p>
+                                </div>
+
+                                <div className="bg-slate-600 p-3 rounded-lg border-l-4 border-green-500">
+                                    <p className="text-white font-semibold">📹 VIDEO AGENDADAS (3)</p>
+                                    <p className="text-xs text-gray-300 mt-1">Carlos & Ana • Segunda 19h • Aguardando...</p>
+                                </div>
+
+                                <div className="bg-slate-600 p-3 rounded-lg border-l-4 border-amber-500">
+                                    <p className="text-white font-semibold">💰 PRONTO PARA FECHAR (2)</p>
+                                    <p className="text-xs text-gray-300 mt-1">Pedro & Lara • "Adoramos!" • [Enviar checkout]</p>
+                                </div>
+
+                                <div className="bg-slate-600 p-3 rounded-lg border-l-4 border-green-600">
+                                    <p className="text-white font-semibold">✅ CONTRATADO (8)</p>
+                                    <p className="text-xs text-gray-300 mt-1">Marina & Thiago • 50% recebido • ✓</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="bg-blue-50 border-l-4 border-blue-500 p-4 rounded">
+                            <p className="font-bold text-blue-900 mb-2">🎯 Tudo que você precisa saber em um lugar:</p>
+                            <ul className="text-sm text-blue-800 space-y-1">
+                                <li>✓ Quantos leads iniciaram conversa com o ChatBot</li>
+                                <li>✓ Quantos agendaram videochamada</li>
+                                <li>✓ Quantos estão prontos pra fechar</li>
+                                <li>✓ Quanto você já recebeu em sinais</li>
+                                <li>✓ Qual sua taxa de conversão</li>
+                                <li>✓ Tudo automático, sem planilhas Excel!</li>
+                            </ul>
+                        </div>
+
+                        <button
+                            onClick={() => setStep(0)}
+                            className="w-full mt-8 bg-amber-600 text-white py-3 rounded-lg font-bold hover:bg-amber-700 transition-all"
+                        >
+                            Voltar ao Início
+                        </button>
+                    </div>
+                </div>
+            );
+
+            const pages = [Landing, Configurador, ChatBot, VideoJamada, Dashboard];
+            const CurrentPage = pages[step];
 
             return (
-                <div className="min-h-screen bg-white">
+                <div className="min-h-screen bg-gray-50">
                     {/* Progress Bar */}
                     <div className="sticky top-0 z-50 bg-white border-b shadow-sm">
                         <div className="max-w-6xl mx-auto px-6 py-4">
-                            <div className="flex items-center justify-between mb-4">
-                                <h1 className="text-xl font-bold text-gray-900">🎵 Cadenza — Novo Fluxo</h1>
-                                <div className="text-sm text-gray-600">
-                                    Passo {step + 1} de {steps.length}
-                                </div>
+                            <div className="flex items-center justify-between mb-3">
+                                <h1 className="text-xl font-bold text-gray-900">🎵 Cadenza 2.0 - Sistema Completo</h1>
+                                <div className="text-sm text-gray-600">Passo {step + 1} de {steps.length}</div>
                             </div>
 
                             <div className="flex gap-2 overflow-x-auto">
@@ -496,7 +468,7 @@
                                                 : 'bg-gray-200 text-gray-600 hover:bg-gray-300'
                                         }`}
                                     >
-                                        <span>{s.icon}</span>
+                                        <span className="text-lg">{s.icon}</span>
                                         <span className="hidden sm:inline">{s.name}</span>
                                     </button>
                                 ))}
@@ -506,13 +478,13 @@
 
                     {/* Content */}
                     <div className="fade-in">
-                        <CurrentComponent />
+                        <CurrentPage />
                     </div>
                 </div>
             );
         }
 
-        ReactDOM.render(<CadenzaMockup />, document.getElementById('root'));
+        ReactDOM.render(<CadenzaCompleto />, document.getElementById('root'));
     </script>
 </body>
 </html>

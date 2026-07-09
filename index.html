@@ -3,488 +3,1226 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadenza 2.0 - Sistema Completo com ChatBot WhatsApp</title>
-    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Cadenza 2.0 - Sistema Completo</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎵</text></svg>">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto; }
-        @keyframes slideIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.7; } }
-        .slide-in { animation: slideIn 0.4s ease-out; }
-        .fade-in { animation: fadeIn 0.3s ease-out; }
-        .message-bubble { animation: slideIn 0.3s ease-out; }
-        input[type="range"] { accent-color: #b8860b; }
-        .whatsapp-bubble { max-width: 85%; word-wrap: break-word; }
-        .whatsapp-sent { background: #e3f2fd; border-radius: 18px 4px 18px 18px; margin-left: auto; }
-        .whatsapp-received { background: #f5f5f5; border-radius: 4px 18px 18px 18px; margin-right: auto; }
-    </style>
-</head>
-<body class="bg-gray-50">
-    <div id="root"></div>
-
-    <script type="text/babel">
-        const { useState } = React;
-
-        function CadenzaCompleto() {
-            const [step, setStep] = useState(0);
-            const [selectedDate, setSelectedDate] = useState(null);
-            const [price, setPrice] = useState(3500);
-            const [eventType, setEventType] = useState('cerimonia');
-            const [chatMessages, setChatMessages] = useState([]);
-            const [showChat, setShowChat] = useState(false);
-
-            const steps = [
-                { name: 'Landing', icon: '🎬', desc: 'Conhece a banda' },
-                { name: 'Configurador', icon: '⚙️', desc: 'Orçamento mágico' },
-                { name: 'ChatBot WhatsApp', icon: '💬', desc: 'Conversa IA' },
-                { name: 'Video Jamada', icon: '📹', desc: 'Conhecimento real' },
-                { name: 'Dashboard', icon: '📊', desc: 'Controle total' }
-            ];
-
-            // Mensagens do ChatBot
-            const chatbotMessages = [
-                { sender: 'bot', text: 'Oi João! 👋 Aqui é a Banda XYZ 🎵\n\nVi que você quer orçamento pro casamento. Vamos lá!\n\nVocê está interessado em:\nA) Cerimônia\nB) Festa/Recepção\nC) Ambos', delay: 0 },
-                { sender: 'user', text: 'Ambos!', delay: 2 },
-                { sender: 'bot', text: 'Bacana! 🎉\n\nVocê já tem algum instrumento preferido?\n(Exemplo: violino, voz bonita)\n\nOu prefere que a gente sugira?', delay: 3 },
-                { sender: 'user', text: 'Ah, prefiro que vocês sugiram!', delay: 4 },
-                { sender: 'bot', text: 'Perfeito! 🎵\n\nBaseado no que você falou, recomendo nosso TRIO CLÁSSICO:\n\n🎻 Violão + Voz + Teclado + Violino\n\n📹 Vê aqui uma cerimônia que fizemos:\n[VIDEO DO TRIO]\n\nIsso atende sua expectativa?', delay: 5 },
-                { sender: 'user', text: 'Adorei! Muito bom mesmo!', delay: 6 },
-                { sender: 'bot', text: 'Maravilha! 🌟\n\nAgora preciso de mais informações:\n\n📍 Qual é o local do seu casamento?\n(Ex: Salão das Flores, Sítio do Bom)', delay: 7 }
-            ];
-
-            // PÁGINA 1: LANDING
-            const Landing = () => (
-                <div className="slide-in min-h-screen bg-white">
-                    <div className="bg-gradient-to-r from-amber-50 to-white p-6 border-b shadow-sm sticky top-0 z-40">
-                        <div className="max-w-5xl mx-auto flex items-center gap-3">
-                            <span className="text-3xl">🎵</span>
-                            <h1 className="text-3xl font-bold text-gray-900">Banda XYZ</h1>
-                            <span className="ml-auto text-sm text-gray-500">Casamentos & Eventos</span>
-                        </div>
-                    </div>
-
-                    <div className="max-w-5xl mx-auto px-6 py-12">
-                        <div className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-xl overflow-hidden aspect-video flex items-center justify-center mb-12 relative">
-                            <span className="text-6xl">▶️</span>
-                            <p className="absolute bottom-4 left-4 text-white text-sm">30s • Ao vivo no último casamento</p>
-                        </div>
-
-                        <h2 className="text-5xl font-bold text-gray-900 mb-4">A banda que toca a música que você imaginou</h2>
-                        <p className="text-xl text-gray-600 mb-12">Vídeos, reviews reais e som impecável. Confira se combina com seu estilo.</p>
-
-                        <div className="mb-12">
-                            <h3 className="text-2xl font-bold text-gray-900 mb-6">Nossos Vídeos</h3>
-                            <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-                                {[
-                                    { title: 'Cerimônia Intimista', icon: '🎻' },
-                                    { title: 'Recepção Animada', icon: '🎸' },
-                                    { title: 'Nosso Som', icon: '🎵' },
-                                    { title: 'Depoimentos', icon: '💬' }
-                                ].map((v, i) => (
-                                    <div key={i} className="bg-gray-100 rounded-lg p-6 text-center hover:bg-amber-100 transition-all cursor-pointer border-2 border-transparent hover:border-amber-400">
-                                        <div className="text-5xl mb-3">{v.icon}</div>
-                                        <p className="font-semibold text-gray-900">{v.title}</p>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-
-                        <div className="mb-12">
-                            <h3 className="text-2xl font-bold text-gray-900 mb-6">Reviews de Clientes</h3>
-                            <div className="space-y-4">
-                                {[
-                                    { name: 'João & Maria', text: 'Foram incríveis! Exatamente o que sonhamos.' },
-                                    { name: 'Carlos & Ana', text: 'Melhor decisão que tomamos!' }
-                                ].map((r, i) => (
-                                    <div key={i} className="bg-amber-50 p-4 rounded-lg border border-amber-200">
-                                        <div className="flex gap-2 mb-2">⭐⭐⭐⭐⭐ <span className="font-semibold text-gray-900">{r.name}</span></div>
-                                        <p className="text-gray-700">{r.text}</p>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-
-                        <button
-                            onClick={() => setStep(1)}
-                            className="w-full bg-gradient-to-r from-amber-500 to-amber-600 text-white py-4 rounded-lg font-bold text-lg hover:shadow-lg transition-all hover:scale-105"
-                        >
-                            Quer saber se combina com seu casamento? →
-                        </button>
-                    </div>
-                </div>
-            );
-
-            // PÁGINA 2: CONFIGURADOR
-            const Configurador = () => (
-                <div className="slide-in min-h-screen bg-gradient-to-br from-gray-50 to-white p-6">
-                    <div className="max-w-2xl mx-auto">
-                        <button onClick={() => setStep(0)} className="flex items-center gap-2 text-gray-600 mb-6 font-semibold hover:text-gray-900">← Voltar</button>
-
-                        <h2 className="text-3xl font-bold text-gray-900 mb-2">Vamos criar seu orçamento?</h2>
-                        <p className="text-gray-600 mb-8">Responda 4 perguntas e veja o preço em TEMPO REAL.</p>
-
-                        <div className="bg-white rounded-xl shadow-sm border p-8 space-y-8">
-                            <div>
-                                <label className="text-sm font-bold text-gray-900 block mb-3">1️⃣ Tipo de evento</label>
-                                <div className="grid grid-cols-3 gap-2">
-                                    {[
-                                        { id: 'cerimonia', label: 'Cerimônia' },
-                                        { id: 'recepcao', label: 'Recepção' },
-                                        { id: 'ambos', label: 'Ambos' }
-                                    ].map(t => (
-                                        <button
-                                            key={t.id}
-                                            onClick={() => setEventType(t.id)}
-                                            className={`px-4 py-2 rounded-lg font-medium transition-all ${
-                                                eventType === t.id
-                                                    ? 'bg-amber-600 text-white shadow-lg'
-                                                    : 'bg-gray-100 text-gray-900 hover:bg-gray-200'
-                                            }`}
-                                        >
-                                            {t.label}
-                                        </button>
-                                    ))}
-                                </div>
-                            </div>
-
-                            <div>
-                                <label className="text-sm font-bold text-gray-900 block mb-3">2️⃣ Data do evento</label>
-                                <div className="bg-gray-50 p-4 rounded-lg">
-                                    <div className="grid grid-cols-7 gap-2">
-                                        {['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'].map(d => (
-                                            <div key={d} className="text-center text-xs font-semibold text-gray-600 py-1">{d}</div>
-                                        ))}
-                                        {[...Array(30)].map((_, i) => {
-                                            const day = i + 1;
-                                            const blocked = [5, 6, 12, 13, 19, 20, 26, 27].includes(day);
-                                            const selected = selectedDate === day;
-                                            return (
-                                                <button
-                                                    key={day}
-                                                    onClick={() => !blocked && setSelectedDate(day)}
-                                                    disabled={blocked}
-                                                    className={`h-8 rounded text-xs font-semibold transition-all ${
-                                                        selected
-                                                            ? 'bg-amber-600 text-white shadow-lg'
-                                                            : blocked
-                                                            ? 'bg-gray-300 text-gray-500 line-through cursor-not-allowed'
-                                                            : 'bg-white border border-gray-300 text-gray-900 hover:border-amber-400'
-                                                    }`}
-                                                >
-                                                    {day}
-                                                </button>
-                                            );
-                                        })}
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div>
-                                <label className="text-sm font-bold text-gray-900 block mb-3">3️⃣ Orçamento esperado</label>
-                                <input
-                                    type="range"
-                                    min="1500"
-                                    max="8000"
-                                    step="100"
-                                    value={price}
-                                    onChange={(e) => setPrice(parseInt(e.target.value))}
-                                    className="w-full h-2 bg-gray-300 rounded-lg cursor-pointer"
-                                />
-                                <div className="flex justify-between items-center mt-4">
-                                    <p className="text-xs text-gray-600">R$ 1.500</p>
-                                    <div className="text-center">
-                                        <p className="text-4xl font-bold text-amber-600">R$ {price.toLocaleString('pt-BR')}</p>
-                                    </div>
-                                    <p className="text-xs text-gray-600">R$ 8.000</p>
-                                </div>
-                            </div>
-
-                            <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
-                                <h3 className="font-bold text-gray-900 mb-3">💰 Resumo</h3>
-                                <div className="space-y-2 text-sm">
-                                    <div className="flex justify-between text-gray-700">
-                                        <span>Base:</span>
-                                        <span>R$ {price.toLocaleString('pt-BR')}</span>
-                                    </div>
-                                    {eventType === 'ambos' && (
-                                        <div className="flex justify-between text-amber-700">
-                                            <span>Multi-evento:</span>
-                                            <span>+ R$ 1.000</span>
-                                        </div>
-                                    )}
-                                    <div className="border-t border-amber-200 pt-2 flex justify-between font-bold text-amber-900">
-                                        <span>TOTAL:</span>
-                                        <span>R$ {(price + (eventType === 'ambos' ? 1000 : 0)).toLocaleString('pt-BR')}</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <button
-                                onClick={() => setStep(2)}
-                                className="w-full bg-amber-600 text-white py-3 rounded-lg font-bold hover:bg-amber-700 transition-all"
-                            >
-                                Prosseguir para o ChatBot →
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            );
-
-            // PÁGINA 3: CHATBOT WHATSAPP
-            const ChatBot = () => (
-                <div className="slide-in min-h-screen bg-gradient-to-br from-green-50 to-white p-6">
-                    <div className="max-w-2xl mx-auto">
-                        <button onClick={() => setStep(1)} className="flex items-center gap-2 text-gray-600 mb-6 font-semibold hover:text-gray-900">← Voltar</button>
-
-                        <h2 className="text-3xl font-bold text-gray-900 mb-2">💬 Conversando com a Banda via ChatBot IA</h2>
-                        <p className="text-gray-600 mb-6">O chatbot inteligente faz perguntas, mostra vídeos e conduz a negociação AUTOMATICAMENTE.</p>
-
-                        <div className="bg-white rounded-xl shadow-lg overflow-hidden border-2 border-green-500 h-96 flex flex-col">
-                            {/* Chat Header */}
-                            <div className="bg-green-600 text-white p-4">
-                                <h3 className="font-bold flex items-center gap-2">
-                                    <span>🎵 Banda XYZ</span>
-                                    <span className="w-2 h-2 bg-green-300 rounded-full animate-pulse"></span>
-                                </h3>
-                                <p className="text-xs text-green-100">Online</p>
-                            </div>
-
-                            {/* Chat Messages */}
-                            <div className="flex-1 overflow-y-auto p-4 space-y-3 bg-gray-50">
-                                {chatbotMessages.slice(0, 7).map((msg, i) => (
-                                    <div key={i} className={`fade-in ${msg.sender === 'user' ? 'flex justify-end' : 'flex justify-start'}`}>
-                                        <div className={`whatsapp-bubble p-3 rounded-lg text-sm whitespace-pre-line ${
-                                            msg.sender === 'user'
-                                                ? 'whatsapp-sent text-gray-900 font-medium'
-                                                : 'whatsapp-received text-gray-800'
-                                        }`}>
-                                            {msg.text}
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-
-                            {/* Chat Input */}
-                            <div className="bg-gray-100 p-3 border-t flex gap-2">
-                                <input type="text" placeholder="Digite sua mensagem..." className="flex-1 rounded-full px-4 py-2 border-none bg-white" />
-                                <button className="bg-green-600 text-white rounded-full w-10 h-10 flex items-center justify-center">➤</button>
-                            </div>
-                        </div>
-
-                        <div className="mt-8 bg-blue-50 border-l-4 border-blue-500 p-4">
-                            <p className="font-bold text-blue-900 mb-2">✨ O que o ChatBot faz:</p>
-                            <ul className="text-sm text-blue-800 space-y-1">
-                                <li>✓ Faz perguntas inteligentes baseadas nas respostas anteriores</li>
-                                <li>✓ Mostra vídeos do repertório (cerimônia, recepção, etc)</li>
-                                <li>✓ Sugere pacotes baseado no perfil do cliente</li>
-                                <li>✓ Cria expectativa SEM mostrar preço (deixa pro especialista)</li>
-                                <li>✓ Agenda automaticamente a videochamada</li>
-                                <li>✓ Tudo 100% AUTOMÁTICO - a banda pode dormir!</li>
-                            </ul>
-                        </div>
-
-                        <button
-                            onClick={() => setStep(3)}
-                            className="w-full mt-8 bg-amber-600 text-white py-3 rounded-lg font-bold hover:bg-amber-700 transition-all"
-                        >
-                            Próximo: Videochamada com Especialista →
-                        </button>
-                    </div>
-                </div>
-            );
-
-            // PÁGINA 4: VIDEO JAMADA
-            const VideoJamada = () => (
-                <div className="slide-in min-h-screen bg-gradient-to-br from-purple-50 to-white p-6">
-                    <div className="max-w-2xl mx-auto">
-                        <button onClick={() => setStep(2)} className="flex items-center gap-2 text-gray-600 mb-6 font-semibold hover:text-gray-900">← Voltar</button>
-
-                        <h2 className="text-3xl font-bold text-gray-900 mb-2">📹 Video Jamada - A Magia Acontece</h2>
-                        <p className="text-gray-600 mb-8">Aqui é onde você conhece o cliente pessoalmente, toca alguns trechos e FECHA a venda.</p>
-
-                        <div className="space-y-6">
-                            <div className="bg-gradient-to-br from-purple-600 to-purple-700 text-white rounded-xl p-6">
-                                <h3 className="text-2xl font-bold mb-4">João & Maria</h3>
-                                <div className="grid grid-cols-2 gap-4">
-                                    <div>
-                                        <p className="text-xs opacity-80 mb-1">📅 Data</p>
-                                        <p className="text-xl font-bold">20 de Dezembro</p>
-                                    </div>
-                                    <div>
-                                        <p className="text-xs opacity-80 mb-1">💰 Orçamento</p>
-                                        <p className="text-xl font-bold">R$ 4.000</p>
-                                    </div>
-                                    <div>
-                                        <p className="text-xs opacity-80 mb-1">🎵 Estilo</p>
-                                        <p className="text-lg font-bold">Sertanejo + Rock</p>
-                                    </div>
-                                    <div>
-                                        <p className="text-xs opacity-80 mb-1">🎉 Tipo</p>
-                                        <p className="text-lg font-bold">Ambos</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="bg-gray-50 border-2 border-gray-300 rounded-lg p-6">
-                                <h3 className="font-bold text-gray-900 mb-3">📹 Zoom Video</h3>
-                                <div className="bg-gray-900 aspect-video rounded-lg flex items-center justify-center mb-4">
-                                    <span className="text-6xl">👥</span>
-                                </div>
-                                <p className="text-sm text-gray-600">Você está tocando, mostrando o repertório. Cliente vê você pessoalmente.</p>
-                            </div>
-
-                            <div className="bg-green-50 border border-green-200 rounded-lg p-6">
-                                <h3 className="font-bold text-green-900 mb-4">Se o cliente disser SIM:</h3>
-                                <div className="space-y-2 text-sm text-green-800">
-                                    <p>✓ Sistema envia link de pagamento automático</p>
-                                    <p>✓ Cliente paga 50% (sinal) no app</p>
-                                    <p>✓ Contrato é assinado digitalmente</p>
-                                    <p>✓ Você vê no Dashboard: "RESERVADO" ✅</p>
-                                    <p>✓ 3 dias antes: cobrança automática do 50% restante</p>
-                                </div>
-                            </div>
-
-                            <div className="bg-gray-100 border border-gray-300 rounded-lg p-6">
-                                <h3 className="font-bold text-gray-900 mb-4">Se o cliente disser "Preciso pensar":</h3>
-                                <div className="space-y-2 text-sm text-gray-700">
-                                    <p>✓ Você marca como "Não combinou"</p>
-                                    <p>✓ Sistema aprende por quê (estilo? preço?)</p>
-                                    <p>✓ Próxima vez você rejeita parecido rápido</p>
-                                    <p>✓ Menos tempo perdido!</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <button
-                            onClick={() => setStep(4)}
-                            className="w-full mt-8 bg-amber-600 text-white py-3 rounded-lg font-bold hover:bg-amber-700 transition-all"
-                        >
-                            Próximo: Seu Dashboard de Controle →
-                        </button>
-                    </div>
-                </div>
-            );
-
-            // PÁGINA 5: DASHBOARD
-            const Dashboard = () => (
-                <div className="slide-in min-h-screen bg-gradient-to-br from-slate-900 to-slate-800 p-6">
-                    <div className="max-w-4xl mx-auto">
-                        <button onClick={() => setStep(3)} className="flex items-center gap-2 text-amber-400 mb-6 font-semibold hover:text-amber-300">← Voltar</button>
-
-                        <h2 className="text-3xl font-bold text-white mb-2">📊 Seu Dashboard - Controle Total</h2>
-                        <p className="text-gray-300 mb-8">Uma visão 360° de tudo que está acontecendo. Você vê tudo em um lugar.</p>
-
-                        <div className="grid grid-cols-4 gap-4 mb-8">
-                            <div className="bg-gradient-to-br from-green-500 to-green-600 rounded-lg p-4 text-white">
-                                <p className="text-xs opacity-80 mb-1">Conversas Iniciadas</p>
-                                <p className="text-3xl font-bold">47</p>
-                            </div>
-                            <div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg p-4 text-white">
-                                <p className="text-xs opacity-80 mb-1">Video Agendadas</p>
-                                <p className="text-3xl font-bold">12</p>
-                            </div>
-                            <div className="bg-gradient-to-br from-amber-500 to-amber-600 rounded-lg p-4 text-white">
-                                <p className="text-xs opacity-80 mb-1">Pronto pra Fechar</p>
-                                <p className="text-3xl font-bold">5</p>
-                            </div>
-                            <div className="bg-gradient-to-br from-purple-500 to-purple-600 rounded-lg p-4 text-white">
-                                <p className="text-xs opacity-80 mb-1">Conversão</p>
-                                <p className="text-3xl font-bold">68%</p>
-                            </div>
-                        </div>
-
-                        <div className="bg-slate-700 rounded-lg p-6 mb-8 border border-amber-500/30">
-                            <h3 className="text-white font-bold mb-4 text-lg">📋 PIPELINE (Status dos Leads)</h3>
-                            
-                            <div className="space-y-3">
-                                <div className="bg-slate-600 p-3 rounded-lg border-l-4 border-blue-500">
-                                    <p className="text-white font-semibold">📱 CONVERSAS ATIVAS (6)</p>
-                                    <p className="text-xs text-gray-300 mt-1">João & Maria • Sertanejo • Domingo 15h</p>
-                                </div>
-
-                                <div className="bg-slate-600 p-3 rounded-lg border-l-4 border-green-500">
-                                    <p className="text-white font-semibold">📹 VIDEO AGENDADAS (3)</p>
-                                    <p className="text-xs text-gray-300 mt-1">Carlos & Ana • Segunda 19h • Aguardando...</p>
-                                </div>
-
-                                <div className="bg-slate-600 p-3 rounded-lg border-l-4 border-amber-500">
-                                    <p className="text-white font-semibold">💰 PRONTO PARA FECHAR (2)</p>
-                                    <p className="text-xs text-gray-300 mt-1">Pedro & Lara • "Adoramos!" • [Enviar checkout]</p>
-                                </div>
-
-                                <div className="bg-slate-600 p-3 rounded-lg border-l-4 border-green-600">
-                                    <p className="text-white font-semibold">✅ CONTRATADO (8)</p>
-                                    <p className="text-xs text-gray-300 mt-1">Marina & Thiago • 50% recebido • ✓</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="bg-blue-50 border-l-4 border-blue-500 p-4 rounded">
-                            <p className="font-bold text-blue-900 mb-2">🎯 Tudo que você precisa saber em um lugar:</p>
-                            <ul className="text-sm text-blue-800 space-y-1">
-                                <li>✓ Quantos leads iniciaram conversa com o ChatBot</li>
-                                <li>✓ Quantos agendaram videochamada</li>
-                                <li>✓ Quantos estão prontos pra fechar</li>
-                                <li>✓ Quanto você já recebeu em sinais</li>
-                                <li>✓ Qual sua taxa de conversão</li>
-                                <li>✓ Tudo automático, sem planilhas Excel!</li>
-                            </ul>
-                        </div>
-
-                        <button
-                            onClick={() => setStep(0)}
-                            className="w-full mt-8 bg-amber-600 text-white py-3 rounded-lg font-bold hover:bg-amber-700 transition-all"
-                        >
-                            Voltar ao Início
-                        </button>
-                    </div>
-                </div>
-            );
-
-            const pages = [Landing, Configurador, ChatBot, VideoJamada, Dashboard];
-            const CurrentPage = pages[step];
-
-            return (
-                <div className="min-h-screen bg-gray-50">
-                    {/* Progress Bar */}
-                    <div className="sticky top-0 z-50 bg-white border-b shadow-sm">
-                        <div className="max-w-6xl mx-auto px-6 py-4">
-                            <div className="flex items-center justify-between mb-3">
-                                <h1 className="text-xl font-bold text-gray-900">🎵 Cadenza 2.0 - Sistema Completo</h1>
-                                <div className="text-sm text-gray-600">Passo {step + 1} de {steps.length}</div>
-                            </div>
-
-                            <div className="flex gap-2 overflow-x-auto">
-                                {steps.map((s, i) => (
-                                    <button
-                                        key={i}
-                                        onClick={() => setStep(i)}
-                                        className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold transition-all whitespace-nowrap ${
-                                            i <= step
-                                                ? 'bg-amber-600 text-white'
-                                                : 'bg-gray-200 text-gray-600 hover:bg-gray-300'
-                                        }`}
-                                    >
-                                        <span className="text-lg">{s.icon}</span>
-                                        <span className="hidden sm:inline">{s.name}</span>
-                                    </button>
-                                ))}
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Content */}
-                    <div className="fade-in">
-                        <CurrentPage />
-                    </div>
-                </div>
-            );
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
-        ReactDOM.render(<CadenzaCompleto />, document.getElementById('root'));
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f9fafb;
+            color: #1f2937;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .sticky-header {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 24px;
+            margin-bottom: 12px;
+        }
+
+        .header-title {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .step-counter {
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        .step-buttons {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding: 0 24px 16px 24px;
+            flex-wrap: wrap;
+        }
+
+        .step-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.3s ease;
+            background-color: #e5e7eb;
+            color: #4b5563;
+        }
+
+        .step-btn.active {
+            background-color: #d97706;
+            color: white;
+        }
+
+        .page {
+            display: none;
+            animation: slideIn 0.4s ease-out;
+        }
+
+        .page.visible {
+            display: block;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .page-content {
+            padding: 48px 24px;
+        }
+
+        .page-max-width {
+            max-width: 896px;
+            margin: 0 auto;
+        }
+
+        .back-button {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #4b5563;
+            font-weight: 600;
+            margin-bottom: 24px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .back-button:hover {
+            color: #1f2937;
+        }
+
+        .landing-header {
+            background: linear-gradient(to right, #fef3c7, #ffffff);
+            padding: 24px;
+            border-bottom: 1px solid #e5e7eb;
+            position: sticky;
+            top: 140px;
+            z-index: 40;
+        }
+
+        .landing-header-content {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .landing-header-content h1 {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .landing-header-content span {
+            margin-left: auto;
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        .video-placeholder {
+            background: linear-gradient(to bottom right, #111827, #1f2937);
+            border-radius: 12px;
+            overflow: hidden;
+            aspect-ratio: 16 / 9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 48px;
+            position: relative;
+            font-size: 48px;
+        }
+
+        .video-label {
+            position: absolute;
+            bottom: 16px;
+            left: 16px;
+            color: white;
+            font-size: 14px;
+        }
+
+        h2 {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 16px;
+            color: #1f2937;
+        }
+
+        .subtitle {
+            font-size: 18px;
+            color: #4b5563;
+            margin-bottom: 48px;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #1f2937;
+            margin-bottom: 24px;
+        }
+
+        .grid-2x2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 48px;
+        }
+
+        .grid-item {
+            background-color: #f3f4f6;
+            border-radius: 8px;
+            padding: 24px;
+            text-align: center;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .grid-item:hover {
+            background-color: #fef3c7;
+            border-color: #f59e0b;
+        }
+
+        .grid-item-icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+        }
+
+        .grid-item-text {
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        .reviews {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-bottom: 48px;
+        }
+
+        .review {
+            background-color: #fef3c7;
+            padding: 16px;
+            border-radius: 8px;
+            border: 1px solid #fcd34d;
+        }
+
+        .review-header {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .review-stars {
+            font-size: 14px;
+        }
+
+        .review-name {
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        .review-text {
+            color: #374151;
+            font-size: 14px;
+        }
+
+        .button {
+            width: 100%;
+            padding: 16px;
+            border-radius: 8px;
+            border: none;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .button-primary {
+            background: linear-gradient(to right, #f59e0b, #d97706);
+            color: white;
+        }
+
+        .button-primary:hover {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            transform: scale(1.02);
+        }
+
+        .configurador-section {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e5e7eb;
+            padding: 32px;
+        }
+
+        .configurador-section + .configurador-section {
+            margin-top: 32px;
+        }
+
+        .section-label {
+            font-size: 14px;
+            font-weight: bold;
+            color: #1f2937;
+            display: block;
+            margin-bottom: 12px;
+        }
+
+        .button-group {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+        }
+
+        .button-toggle {
+            padding: 8px 16px;
+            border-radius: 8px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background-color: #f3f4f6;
+            color: #1f2937;
+        }
+
+        .button-toggle:hover {
+            background-color: #e5e7eb;
+        }
+
+        .button-toggle.active {
+            background-color: #d97706;
+            color: white;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .calendar {
+            background-color: #f9fafb;
+            padding: 16px;
+            border-radius: 8px;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+        }
+
+        .calendar-header {
+            text-align: center;
+            font-size: 12px;
+            font-weight: 600;
+            color: #6b7280;
+            padding: 8px 0;
+        }
+
+        .calendar-day {
+            height: 32px;
+            border-radius: 6px;
+            border: 1px solid #d1d5db;
+            background-color: white;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        .calendar-day:hover:not(:disabled) {
+            border-color: #f59e0b;
+        }
+
+        .calendar-day.selected {
+            background-color: #d97706;
+            color: white;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .calendar-day:disabled {
+            background-color: #d1d5db;
+            color: #6b7280;
+            cursor: not-allowed;
+            text-decoration: line-through;
+        }
+
+        .slider {
+            width: 100%;
+            height: 8px;
+            border-radius: 4px;
+            background-color: #d1d5db;
+            outline: none;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: #b8860b;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .slider::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: #b8860b;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .price-display {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 16px;
+        }
+
+        .price-label {
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        .price-value {
+            font-size: 32px;
+            font-weight: bold;
+            color: #d97706;
+            text-align: center;
+        }
+
+        .summary {
+            background-color: #fef3c7;
+            border: 1px solid #fcd34d;
+            border-radius: 8px;
+            padding: 16px;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            margin-bottom: 8px;
+            color: #374151;
+        }
+
+        .summary-total {
+            border-top: 1px solid #fcd34d;
+            padding-top: 8px;
+            font-weight: bold;
+            color: #92400e;
+            margin-top: 8px;
+        }
+
+        .chat-container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            border: 2px solid #10b981;
+            overflow: hidden;
+            height: 384px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-header {
+            background-color: #059669;
+            color: white;
+            padding: 16px;
+        }
+
+        .chat-title {
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .online-indicator {
+            width: 8px;
+            height: 8px;
+            background-color: #86efac;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .chat-status {
+            font-size: 12px;
+            color: #d1fae5;
+            margin-top: 2px;
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+            background-color: #f9fafb;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .message {
+            display: flex;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .message.sent {
+            justify-content: flex-end;
+        }
+
+        .message-bubble {
+            max-width: 85%;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 14px;
+            line-height: 1.4;
+            word-wrap: break-word;
+            white-space: pre-wrap;
+        }
+
+        .message.sent .message-bubble {
+            background-color: #dbeafe;
+            border-radius: 18px 4px 18px 18px;
+            color: #1f2937;
+            font-weight: 500;
+        }
+
+        .message.received .message-bubble {
+            background-color: #f5f5f5;
+            border-radius: 4px 18px 18px 18px;
+            color: #374151;
+        }
+
+        .chat-input {
+            background-color: #f3f4f6;
+            padding: 12px;
+            border-top: 1px solid #e5e7eb;
+            display: flex;
+            gap: 8px;
+        }
+
+        .chat-input input {
+            flex: 1;
+            border-radius: 24px;
+            border: none;
+            padding: 8px 16px;
+            background-color: white;
+            outline: none;
+            font-size: 14px;
+        }
+
+        .chat-input button {
+            background-color: #059669;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .info-box {
+            border-left: 4px solid #3b82f6;
+            background-color: #eff6ff;
+            padding: 16px;
+            border-radius: 6px;
+            margin: 32px 0;
+        }
+
+        .info-box-title {
+            font-weight: bold;
+            color: #1e3a8a;
+            margin-bottom: 8px;
+        }
+
+        .info-box-list {
+            list-style: none;
+            color: #1e40af;
+            font-size: 14px;
+        }
+
+        .info-box-list li {
+            margin-bottom: 4px;
+        }
+
+        .card {
+            background: linear-gradient(to bottom right, #9333ea, #6d28d9);
+            color: white;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .card-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 16px;
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+
+        .card-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-item-label {
+            font-size: 12px;
+            opacity: 0.8;
+            margin-bottom: 4px;
+        }
+
+        .card-item-value {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .video-frame {
+            background-color: #111827;
+            border-radius: 8px;
+            aspect-ratio: 16 / 9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 16px;
+            font-size: 48px;
+        }
+
+        .alert {
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 24px;
+        }
+
+        .alert-success {
+            background-color: #dcfce7;
+            border: 1px solid #86efac;
+            color: #166534;
+        }
+
+        .alert-success-title {
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .alert-list {
+            list-style: none;
+            font-size: 14px;
+        }
+
+        .alert-list li {
+            margin-bottom: 4px;
+        }
+
+        .dashboard-bg {
+            background: linear-gradient(to bottom right, #0f172a, #1e293b);
+            min-height: 100vh;
+            padding-top: 0;
+        }
+
+        .dashboard-content {
+            color: white;
+            padding: 24px;
+        }
+
+        .dashboard-title {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .dashboard-subtitle {
+            color: #cbd5e1;
+            margin-bottom: 32px;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .metric-card {
+            background: linear-gradient(135deg, #10b981, #059669);
+            border-radius: 8px;
+            padding: 16px;
+            color: white;
+        }
+
+        .metric-card.blue {
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+        }
+
+        .metric-card.yellow {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+        }
+
+        .metric-card.purple {
+            background: linear-gradient(135deg, #a855f7, #9333ea);
+        }
+
+        .metric-label {
+            font-size: 12px;
+            opacity: 0.8;
+            margin-bottom: 4px;
+        }
+
+        .metric-value {
+            font-size: 32px;
+            font-weight: bold;
+        }
+
+        .pipeline-box {
+            background-color: #475569;
+            border-radius: 8px;
+            padding: 24px;
+            border: 1px solid rgba(180, 165, 11, 0.3);
+            margin-bottom: 32px;
+        }
+
+        .pipeline-title {
+            font-weight: bold;
+            margin-bottom: 16px;
+            font-size: 18px;
+        }
+
+        .pipeline-item {
+            background-color: #364152;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            border-left: 4px solid #3b82f6;
+        }
+
+        .pipeline-item.green {
+            border-left-color: #10b981;
+        }
+
+        .pipeline-item.yellow {
+            border-left-color: #f59e0b;
+        }
+
+        .pipeline-item.purple {
+            border-left-color: #a855f7;
+        }
+
+        .pipeline-item-title {
+            font-weight: 600;
+            color: white;
+        }
+
+        .pipeline-item-desc {
+            font-size: 12px;
+            color: #cbd5e1;
+            margin-top: 4px;
+        }
+
+        .dashboard-info {
+            background-color: #dbeafe;
+            border-left: 4px solid #3b82f6;
+            padding: 16px;
+            border-radius: 6px;
+            color: #1e40af;
+            margin-bottom: 32px;
+        }
+
+        .dashboard-info-title {
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .dashboard-info-list {
+            list-style: none;
+            font-size: 14px;
+        }
+
+        .dashboard-info-list li {
+            margin-bottom: 4px;
+        }
+
+        @media (max-width: 640px) {
+            .header-top {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+
+            h2 {
+                font-size: 24px;
+            }
+
+            .card-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .metrics-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="sticky-header">
+        <div class="header-top">
+            <div class="header-title">🎵 Cadenza 2.0 - Sistema Completo</div>
+            <div class="step-counter">Passo <span id="step-number">1</span> de 5</div>
+        </div>
+        <div class="step-buttons">
+            <button class="step-btn active" onclick="goToPage(0)">🎬 Landing</button>
+            <button class="step-btn" onclick="goToPage(1)">⚙️ Configurador</button>
+            <button class="step-btn" onclick="goToPage(2)">💬 ChatBot</button>
+            <button class="step-btn" onclick="goToPage(3)">📹 Video</button>
+            <button class="step-btn" onclick="goToPage(4)">📊 Dashboard</button>
+        </div>
+    </div>
+
+    <!-- PAGE 1: LANDING -->
+    <div id="page-0" class="page visible">
+        <div class="landing-header">
+            <div class="landing-header-content container">
+                <span style="font-size: 24px;">🎵</span>
+                <h1>Banda XYZ</h1>
+                <span>Casamentos & Eventos</span>
+            </div>
+        </div>
+
+        <div class="page-content page-max-width">
+            <div class="video-placeholder">
+                ▶️
+                <div class="video-label">30s • Ao vivo no último casamento</div>
+            </div>
+
+            <h2>A banda que toca a música que você imaginou</h2>
+            <p class="subtitle">Vídeos, reviews reais e som impecável. Confira se combina com seu estilo.</p>
+
+            <h3 class="section-title">Nossos Vídeos</h3>
+            <div class="grid-2x2">
+                <div class="grid-item">
+                    <div class="grid-item-icon">🎻</div>
+                    <div class="grid-item-text">Cerimônia Intimista</div>
+                </div>
+                <div class="grid-item">
+                    <div class="grid-item-icon">🎸</div>
+                    <div class="grid-item-text">Recepção Animada</div>
+                </div>
+                <div class="grid-item">
+                    <div class="grid-item-icon">🎵</div>
+                    <div class="grid-item-text">Nosso Som</div>
+                </div>
+                <div class="grid-item">
+                    <div class="grid-item-icon">💬</div>
+                    <div class="grid-item-text">Depoimentos</div>
+                </div>
+            </div>
+
+            <h3 class="section-title">Reviews de Clientes</h3>
+            <div class="reviews">
+                <div class="review">
+                    <div class="review-header">
+                        <span class="review-stars">⭐⭐⭐⭐⭐</span>
+                        <span class="review-name">João & Maria</span>
+                    </div>
+                    <div class="review-text">Foram incríveis! Exatamente o que sonhamos.</div>
+                </div>
+                <div class="review">
+                    <div class="review-header">
+                        <span class="review-stars">⭐⭐⭐⭐⭐</span>
+                        <span class="review-name">Carlos & Ana</span>
+                    </div>
+                    <div class="review-text">Melhor decisão que tomamos!</div>
+                </div>
+            </div>
+
+            <button class="button button-primary" onclick="goToPage(1)">Quer saber se combina com seu casamento? →</button>
+        </div>
+    </div>
+
+    <!-- PAGE 2: CONFIGURADOR -->
+    <div id="page-1" class="page">
+        <div class="page-content page-max-width">
+            <button class="back-button" onclick="goToPage(0)">← Voltar</button>
+
+            <h2>Vamos criar seu orçamento?</h2>
+            <p class="subtitle">Responda 4 perguntas e veja o preço em TEMPO REAL.</p>
+
+            <div class="configurador-section">
+                <label class="section-label">1️⃣ Tipo de evento</label>
+                <div class="button-group">
+                    <button class="button-toggle active" onclick="updateEventType('cerimonia', this)">Cerimônia</button>
+                    <button class="button-toggle" onclick="updateEventType('recepcao', this)">Recepção</button>
+                    <button class="button-toggle" onclick="updateEventType('ambos', this)">Ambos</button>
+                </div>
+            </div>
+
+            <div class="configurador-section">
+                <label class="section-label">2️⃣ Data do evento</label>
+                <div class="calendar">
+                    <div class="calendar-grid">
+                        <div class="calendar-header">Dom</div>
+                        <div class="calendar-header">Seg</div>
+                        <div class="calendar-header">Ter</div>
+                        <div class="calendar-header">Qua</div>
+                        <div class="calendar-header">Qui</div>
+                        <div class="calendar-header">Sex</div>
+                        <div class="calendar-header">Sab</div>
+                        <script>
+                            for(let i = 1; i <= 30; i++) {
+                                const blocked = [5, 6, 12, 13, 19, 20, 26, 27].includes(i);
+                                const btn = document.createElement('button');
+                                btn.textContent = i;
+                                btn.className = 'calendar-day';
+                                btn.disabled = blocked;
+                                if(blocked) {
+                                    btn.style.backgroundColor = '#d1d5db';
+                                    btn.style.color = '#6b7280';
+                                    btn.style.cursor = 'not-allowed';
+                                    btn.style.textDecoration = 'line-through';
+                                }
+                                btn.onclick = function() {
+                                    if(!blocked) {
+                                        document.querySelectorAll('.calendar-day:not(:disabled)').forEach(d => d.classList.remove('selected'));
+                                        this.classList.add('selected');
+                                    }
+                                };
+                                document.currentScript.parentElement.appendChild(btn);
+                            }
+                        </script>
+                    </div>
+                </div>
+            </div>
+
+            <div class="configurador-section">
+                <label class="section-label">3️⃣ Orçamento esperado</label>
+                <input type="range" id="price-slider" class="slider" min="1500" max="8000" step="100" value="3500" onchange="updatePrice(this.value)">
+                <div class="price-display">
+                    <span class="price-label">R$ 1.500</span>
+                    <div class="price-value" id="price-display">R$ 3.500</div>
+                    <span class="price-label">R$ 8.000</span>
+                </div>
+            </div>
+
+            <div class="configurador-section summary">
+                <h3 class="section-label">💰 Resumo</h3>
+                <div class="summary-row">
+                    <span>Base:</span>
+                    <span id="summary-base">R$ 3.500</span>
+                </div>
+                <div class="summary-row" id="summary-extra" style="display: none;">
+                    <span>Multi-evento:</span>
+                    <span>+ R$ 1.000</span>
+                </div>
+                <div class="summary-row summary-total">
+                    <span>TOTAL:</span>
+                    <span id="summary-total">R$ 3.500</span>
+                </div>
+            </div>
+
+            <button class="button button-primary" onclick="goToPage(2)">Prosseguir para o ChatBot →</button>
+        </div>
+    </div>
+
+    <!-- PAGE 3: CHATBOT -->
+    <div id="page-2" class="page">
+        <div class="page-content page-max-width">
+            <button class="back-button" onclick="goToPage(1)">← Voltar</button>
+
+            <h2>💬 Conversando com a Banda via ChatBot IA</h2>
+            <p class="subtitle">O chatbot inteligente faz perguntas, mostra vídeos e conduz a negociação AUTOMATICAMENTE.</p>
+
+            <div class="chat-container">
+                <div class="chat-header">
+                    <div class="chat-title">
+                        🎵 Banda XYZ
+                        <div class="online-indicator"></div>
+                    </div>
+                    <div class="chat-status">Online</div>
+                </div>
+
+                <div class="chat-messages">
+                    <div class="message received fade-in">
+                        <div class="message-bubble">Oi João! 👋 Aqui é a Banda XYZ 🎵
+
+Vi que você quer orçamento pro casamento. Vamos lá!
+
+Você está interessado em:
+A) Cerimônia
+B) Festa/Recepção
+C) Ambos</div>
+                    </div>
+                    <div class="message sent fade-in">
+                        <div class="message-bubble">Ambos!</div>
+                    </div>
+                    <div class="message received fade-in">
+                        <div class="message-bubble">Bacana! 🎉
+
+Você já tem algum instrumento preferido?
+(Violino, voz bonita, flauta?)
+
+Ou prefere que a gente sugira?</div>
+                    </div>
+                    <div class="message sent fade-in">
+                        <div class="message-bubble">Ah, prefiro que vocês sugiram!</div>
+                    </div>
+                    <div class="message received fade-in">
+                        <div class="message-bubble">Perfeito! 🎵
+
+Recomendo nosso TRIO CLÁSSICO:
+🎻 Violão + Voz + Teclado + Violino
+
+📹 Vê aqui uma cerimônia que fizemos:
+[VIDEO]
+
+Isso atende sua expectativa?</div>
+                    </div>
+                </div>
+
+                <div class="chat-input">
+                    <input type="text" placeholder="Digite sua mensagem...">
+                    <button>➤</button>
+                </div>
+            </div>
+
+            <div class="info-box">
+                <div class="info-box-title">✨ O que o ChatBot faz:</div>
+                <ul class="info-box-list">
+                    <li>✓ Faz perguntas inteligentes baseadas nas respostas anteriores</li>
+                    <li>✓ Mostra vídeos do repertório (cerimônia, recepção, etc)</li>
+                    <li>✓ Sugere pacotes baseado no perfil do cliente</li>
+                    <li>✓ Cria expectativa SEM mostrar preço (deixa pro especialista)</li>
+                    <li>✓ Agenda automaticamente a videochamada</li>
+                    <li>✓ Tudo 100% AUTOMÁTICO - a banda pode dormir!</li>
+                </ul>
+            </div>
+
+            <button class="button button-primary" onclick="goToPage(3)">Próximo: Videochamada com Especialista →</button>
+        </div>
+    </div>
+
+    <!-- PAGE 4: VIDEO -->
+    <div id="page-3" class="page">
+        <div class="page-content page-max-width">
+            <button class="back-button" onclick="goToPage(2)">← Voltar</button>
+
+            <h2>📹 Video Jamada - A Magia Acontece</h2>
+            <p class="subtitle">Aqui é onde você conhece o cliente pessoalmente, toca alguns trechos e FECHA a venda.</p>
+
+            <div class="card">
+                <div class="card-title">João & Maria</div>
+                <div class="card-grid">
+                    <div class="card-item">
+                        <div class="card-item-label">📅 Data</div>
+                        <div class="card-item-value">20 de Dezembro</div>
+                    </div>
+                    <div class="card-item">
+                        <div class="card-item-label">💰 Orçamento</div>
+                        <div class="card-item-value">R$ 4.000</div>
+                    </div>
+                    <div class="card-item">
+                        <div class="card-item-label">🎵 Estilo</div>
+                        <div class="card-item-value">Sertanejo + Rock</div>
+                    </div>
+                    <div class="card-item">
+                        <div class="card-item-label">🎉 Tipo</div>
+                        <div class="card-item-value">Ambos</div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="background-color: #f9fafb; border-radius: 8px; padding: 24px; margin-bottom: 24px; border: 2px solid #d1d5db;">
+                <h3 class="section-label">📹 Zoom Video</h3>
+                <div class="video-frame">👥</div>
+                <p style="font-size: 14px; color: #4b5563;">Você está tocando, mostrando o repertório. Cliente vê você pessoalmente.</p>
+            </div>
+
+            <div class="alert alert-success">
+                <div class="alert-success-title">Se o cliente disser SIM:</div>
+                <ul class="alert-list">
+                    <li>✓ Sistema envia link de pagamento automático</li>
+                    <li>✓ Cliente paga 50% (sinal) no app</li>
+                    <li>✓ Contrato é assinado digitalmente</li>
+                    <li>✓ Você vê no Dashboard: "RESERVADO" ✅</li>
+                    <li>✓ 3 dias antes: cobrança automática do 50% restante</li>
+                </ul>
+            </div>
+
+            <button class="button button-primary" onclick="goToPage(4)">Próximo: Seu Dashboard de Controle →</button>
+        </div>
+    </div>
+
+    <!-- PAGE 5: DASHBOARD -->
+    <div id="page-4" class="page dashboard-bg">
+        <div class="dashboard-content">
+            <div style="max-width: 1024px; margin: 0 auto;">
+                <button class="back-button" style="color: #f59e0b;" onclick="goToPage(3)">← Voltar</button>
+
+                <h1 class="dashboard-title">📊 Seu Dashboard - Controle Total</h1>
+                <p class="dashboard-subtitle">Uma visão 360° de tudo que está acontecendo. Você vê tudo em um lugar.</p>
+
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <div class="metric-label">Conversas Iniciadas</div>
+                        <div class="metric-value">47</div>
+                    </div>
+                    <div class="metric-card blue">
+                        <div class="metric-label">Videos Agendadas</div>
+                        <div class="metric-value">12</div>
+                    </div>
+                    <div class="metric-card yellow">
+                        <div class="metric-label">Pronto pra Fechar</div>
+                        <div class="metric-value">5</div>
+                    </div>
+                    <div class="metric-card purple">
+                        <div class="metric-label">Conversão</div>
+                        <div class="metric-value">68%</div>
+                    </div>
+                </div>
+
+                <div class="pipeline-box">
+                    <div class="pipeline-title">📋 PIPELINE (Status dos Leads)</div>
+                    
+                    <div class="pipeline-item blue">
+                        <div class="pipeline-item-title">📱 CONVERSAS ATIVAS (6)</div>
+                        <div class="pipeline-item-desc">João & Maria • Sertanejo • Domingo 15h</div>
+                    </div>
+
+                    <div class="pipeline-item green">
+                        <div class="pipeline-item-title">📹 VIDEOS AGENDADAS (3)</div>
+                        <div class="pipeline-item-desc">Carlos & Ana • Segunda 19h • Aguardando...</div>
+                    </div>
+
+                    <div class="pipeline-item yellow">
+                        <div class="pipeline-item-title">💰 PRONTO PARA FECHAR (2)</div>
+                        <div class="pipeline-item-desc">Pedro & Lara • "Adoramos!" • [Enviar checkout]</div>
+                    </div>
+
+                    <div class="pipeline-item purple">
+                        <div class="pipeline-item-title">✅ CONTRATADO (8)</div>
+                        <div class="pipeline-item-desc">Marina & Thiago • 50% recebido • ✓</div>
+                    </div>
+                </div>
+
+                <div class="dashboard-info">
+                    <div class="dashboard-info-title">🎯 Tudo que você precisa saber em um lugar:</div>
+                    <ul class="dashboard-info-list">
+                        <li>✓ Quantos leads iniciaram conversa com o ChatBot</li>
+                        <li>✓ Quantos agendaram videochamada</li>
+                        <li>✓ Quantos estão prontos pra fechar</li>
+                        <li>✓ Quanto você já recebeu em sinais</li>
+                        <li>✓ Qual sua taxa de conversão</li>
+                        <li>✓ Tudo automático, sem planilhas Excel!</li>
+                    </ul>
+                </div>
+
+                <button class="button button-primary" onclick="goToPage(0)">Voltar ao Início</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentPage = 0;
+        let eventType = 'cerimonia';
+        let price = 3500;
+
+        function goToPage(page) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('visible'));
+            document.getElementById('page-' + page).classList.add('visible');
+            document.getElementById('step-number').textContent = page + 1;
+
+            const buttons = document.querySelectorAll('.step-btn');
+            buttons.forEach((btn, i) => {
+                if(i <= page) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+
+            window.scrollTo(0, 0);
+            currentPage = page;
+        }
+
+        function updateEventType(type, btn) {
+            eventType = type;
+            document.querySelectorAll('.button-toggle').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            updatePrice(price);
+        }
+
+        function updatePrice(value) {
+            price = parseInt(value);
+            const extra = eventType === 'ambos' ? 1000 : 0;
+            const total = price + extra;
+
+            document.getElementById('price-display').textContent = 'R$ ' + price.toLocaleString('pt-BR');
+            document.getElementById('summary-base').textContent = 'R$ ' + price.toLocaleString('pt-BR');
+            document.getElementById('summary-total').textContent = 'R$ ' + total.toLocaleString('pt-BR');
+
+            if(extra > 0) {
+                document.getElementById('summary-extra').style.display = 'flex';
+            } else {
+                document.getElementById('summary-extra').style.display = 'none';
+            }
+
+            document.getElementById('price-slider').value = value;
+        }
     </script>
 </body>
 </html>
